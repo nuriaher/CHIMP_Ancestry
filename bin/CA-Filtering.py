@@ -2,6 +2,7 @@
 import subprocess
 import argparse
 import os
+import re
 
 
 #Argument parsing
@@ -31,32 +32,31 @@ subprocess.Popen(vcf2Cmd,shell=True).wait()
 tmp_new_IDs=out_path+'/'+batch_ID+'-tmp_new_IDs.csv'
 new_IDs=out_path+'/'+batch_ID+'-new_IDs.csv'
 
-with open(in_IDs,'r+') as input_IDs:
-    lines = input_IDs.readlines()
+with open(in_IDs,'r+') as input_IDs, open(tmp_new_IDs,'w+') as reformatted_IDs:
 
-    if len(line.split(' ')) == 4: # Names have already been reformated
-        in_IDs = newIDs
-        break
+    for line in input_IDs.readlines():
 
-    if not (len(line.split(' ')) == 4): # Reformat IDs
-        with open(tmp_newIDs,w+) as reformat_IDs:
-            reformat_IDs.write(input_IDs)
+        if len(line.split(' ')) == 4: # Names have already been reformated
+            in_IDs = new_IDs
+            pass
 
-            if line.find(".variant"):
-                reformat1Cmd='cat '+tmp_newIDs+' | grep variant | sed "s/\.variant[0-9]*//" > '+tmp_newIDs+''
-                subprocess.Popen(reformat1Cmd,shell=True).wait()
+        if not len(line.split(' ')) == 4: # Reformat IDs
 
-            if line.find("Pan_troglodytes"):
-                reformat2Cmd='cat '+tmp_newIDs+' | grep Pan_troglodytes | sed "s/Pan_troglodytes/P_t/" > '+tmp_newIDs+''
-                subprocess.Popen(reformat2Cmd,shell=True).wait()
+            if '.variant' in line:
+                line = re.sub('\.variant[0-9]*','',line)
 
-            if line.find("chimp_"):
-                reformat3Cmd='cat '+tmp_newIDs+' | grep chimp | sed "s/chimp/ZOOChimp/" > '+tmp_newIDs+''
-                subprocess.Popen(reformat3Cmd,shell=True).wait()
+            if 'Pan_troglodytes' in line:
+                line = re.sub('Pan_troglodytes','P_t',line)
 
-            # reformat finished, create final  IDs file
-            reformatfinalCmd='paste '+in_IDs+' '+tmp_newIDs+' | column -t > '+newIDs+' && rm '+tmp_newIDs+''
-            subprocess.Popen(reformatfinalCmd,shell=True).wait()
+            if 'chimp' in line:
+                line = re.sub('chimp','ZOOChimp',line)
+
+            reformatted_IDs.write(line)
+
+
+reformatfinalCmd='paste '+in_IDs+' '+tmp_new_IDs+' | column -t > '+new_IDs+' && rm '+tmp_new_IDs+''
+subprocess.Popen(reformatfinalCmd,shell=True).wait()
+
 
 # update names (shorten names with subspecies abbreviated prefix)
 plink1Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.csv --recode --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
