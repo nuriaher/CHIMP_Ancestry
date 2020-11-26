@@ -22,7 +22,31 @@ batch_ID=args.batch_ID
 # Number of clusters equal to number of chimpanzee subspecies
 k = 4
 
-# Run Admixture on one individual at a time vs Reference Panel
-with open(filt_bed) as bed:
+# Convert bed file into ped file
+plink --bfile filename --recode --tab --out myfavpedfile.ped
 
-    
+BED is the binary of PED:
+In short, the PED format will start with six fields in each row:
+
+Family ID ('FID')
+Within-family ID ('IID'; cannot be '0')
+Within-family ID of father ('0' if father isn't in dataset)
+Within-family ID of mother ('0' if mother isn't in dataset)
+Sex code ('1' = male, '2' = female, '0' = unknown)
+Phenotype value ('1' = control, '2' = case, '-9'/'0'/non-numeric = missing data if case/control)
+
+
+# Run Admixture on one individual at a time vs Reference Panel
+with open(filt_ped) as ped:
+
+#--> maybe create temporal ped files for each individual (PED= REFERENCE PANEL + 1 Individual)
+
+# convert to bed again
+
+
+    admixtureCmd='admixture '+filt_bed+' '+k+''
+    subprocess.Popen(admixtureCmd,shell=True).wait()
+
+    admixture [options] inputFile K
+    inputFile: PLINK .bed file
+    K: 4

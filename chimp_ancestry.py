@@ -19,6 +19,10 @@ args = parser.parse_args()
 input=args.input
 out_path=args.out_path
 
+
+# Get current path to find bin scripts
+current_dir=os.getcwd()
+
 # Process input
 batch_ID=list()
 VCF_path=list()
@@ -31,14 +35,11 @@ with open(input,'r') as input_data:
         if not(len(line) == 3):
             print("Input file error.\nFormat reminder:\n\tbatch_ID,VCF_path,ID_file_path")
 
-
         if len(line) == 3:
             batch_ID.append(line[0])
             VCF_path.append(line[1])
             ID_file.append(line[2])
 
-# Get current path to find bin scripts
-current_dir=os.getcwd()
 
 ## Run
 
@@ -71,7 +72,12 @@ for i in range(len(bach_ID)):
 
     admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -filt_bed '+output_filtering+' -out_path '+out_path_admixture+' -batch_ID '+batchID[i]+''
     subprocess.Popen(admixtureCmd,shell=True).wait()
-
+    
+########################################################################################################################
+########################################################################################################################
+NEED ID FILES TO ADMIXTURE REFERENCE PANEL VS ONE QUERY INDVIDUAL? - If so, check outuput name in filtering.py
+########################################################################################################################
+########################################################################################################################
 
     ######
     ### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
