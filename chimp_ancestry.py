@@ -10,17 +10,41 @@
 
 
 ######
-### 1 - ADMIXTURE & evalADMIX on Reference Panel
+### 1 - VCF from NGS variant calling Filtering
 ###
 
 
 
 ######
-### 2 - Relatedness check INDV vs Reference Panel
+### 2 - PCA - Over all filtered data (Ref Panel.coloured , Unkown ancestries.grey)
 ###
 
 
 
 ######
-### 1 - ADMIXTURE & evalADMIX on Reference Panel
+### 3 - ADMIXTURE - Reference Panel x 1 Query Individual (avoid relatedness bias)
+###
+
+
+
+######
+### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
+###
+
+
+
+######
+### 5 - NGSRelate2 - Relatedness: 1 Query Individual x ADMIXTURE estimated ancestral population
+###
+
+
+
+######
+### 6 - NGSRelate2 - Inbreeding : 1 Query Individual
+###
+
+
+
+######
+### *** 7 *** - Estimate genomic diversity 1 Query Individual
 ###
