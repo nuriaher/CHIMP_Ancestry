@@ -9,11 +9,13 @@ import re
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
 parser.add_argument('-in_VCF', help="input vcf file", dest="in_VCF", required=True)
 parser.add_argument('-in_IDs', help=".csv file with current Family and Within-family IDs", dest="in_IDs", required=True)
+parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
 parser.add_argument('-batch_ID', help="batch_ID", dest="batch_ID", required=True)
 args = parser.parse_args()
 
 in_VCF=args.in_VCF
 in_IDs=args.in_IDs
+out_path=args.out_path
 batch_ID=args.batch_ID
 
 
@@ -48,13 +50,16 @@ with open(in_IDs,'r+') as input_IDs, open(tmp_new_IDs,'w+') as reformatted_IDs:
             if 'Pan_troglodytes' in line:
                 line = re.sub('Pan_troglodytes','P_t',line)
 
-            if 'chimp' in line:
-                line = re.sub('chimp','ZOOChimp',line)
+            if not (line.startswith('Pan')):
+                if 'chimp' in line:
+                    line = re.sub('chimp','ZOOChimp_',line)
+                else:
+                    line = 'ZOOChimp_'+line
 
             reformatted_IDs.write(line)
 
 
-reformatfinalCmd='paste '+in_IDs+' '+tmp_new_IDs+' | column -t > '+new_IDs+' && rm '+tmp_new_IDs+''
+reformatfinalCmd='paste '+in_IDs+' '+tmp_new_IDs+' -d '"\t"' > '+new_IDs+' && rm '+tmp_new_IDs+''
 subprocess.Popen(reformatfinalCmd,shell=True).wait()
 
 
@@ -78,5 +83,5 @@ subprocess.Popen(plink3Cmd,shell=True).wait()
 plink4Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink_maf05_geno0 --indep-pairwise 50 5 0.5'
 subprocess.Popen(plink4Cmd,shell=True).wait()
 
-plink5Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink_maf05_geno0 --extract '+out_path+'/'+batch_ID+'-plink.prune.in --make-bed --out '+out_path+'/'+batch_ID+'-pruned.plink'
+plink5Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink_maf05_geno0 --extract '+out_path+'/'+batch_ID+'-plink.prune.in --make-bed --out '+out_path+'/'+batch_ID+'-pruned.bed'
 subprocess.Popen(plink5Cmd,shell=True).wait()
