@@ -72,13 +72,8 @@ for i in range(len(bach_ID)):
 
     admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -filt_bed '+output_filtering+' -out_path '+out_path_admixture+' -batch_ID '+batchID[i]+''
     subprocess.Popen(admixtureCmd,shell=True).wait()
-    
-########################################################################################################################
-########################################################################################################################
-NEED ID FILES TO ADMIXTURE REFERENCE PANEL VS ONE QUERY INDVIDUAL? - If so, check outuput name in filtering.py
-########################################################################################################################
-########################################################################################################################
 
+    
     ######
     ### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
     ###
