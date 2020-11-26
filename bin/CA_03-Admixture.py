@@ -19,15 +19,10 @@ batch_ID=args.batch_ID
 
 ## Run
 
-    # Generate .eigenvalues .eigenvectors files
-out_base=out_path+'/'+batchID
+# Number of clusters equal to number of chimpanzee subspecies
+k = 4
 
-pcaCmd='plink1 --bfile '+filt_bed+' --pca 10 --out '+out_base+''
-subprocess.Popen(pcaCmd,shell=True).wait()
+# Run Admixture on one individual at a time vs Reference Panel
+with open(filt_bed) as bed:
 
-    # Generate PCA plot
-out_evalues=''+out_base+'.eigenval'
-out_evectors=''+out_base+'.eigenvec'
-
-pcaplotCmd='Rscript CA_02-PCAPlot.R --eval '+out_evalues+' --evec '+out_evectors+' -batch_ID '+batchID+' -out_dir '+out_path+''
-subprocess.Popen(pcaplotCmd,shell=True).wait()
+    
