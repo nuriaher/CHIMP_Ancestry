@@ -34,5 +34,7 @@ out_path=args.out_path
 
 
 # Run NgsRelate
-output=out_path+"-"+individual_ID+'??????????????'
-./ngsrelate  -h my_reformatted.VCF.gz -O output
+output=out_path+"-"+individual_ID+'.res' ## Maybe not necessary
+
+ngsCmd='ngsrelate  -h '+my_reformatted.VCF.gz+' -O '+output+''
+subprocess.Popen(ngsCmd,shell=True).wait()
