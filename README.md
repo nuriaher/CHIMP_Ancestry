@@ -1,2 +1,2 @@
 # CHIMP_Ancestry
-### Filtering and Ancestry analysis of Chimpanzee high-quality NGS data
+### Filtering and Ancestry estimation of Chimpanzee high-quality NGS data
