@@ -31,8 +31,8 @@ subprocess.Popen(vcf2Cmd,shell=True).wait()
 
 # reformat file name in_IDs to new_IDs
     # Generate newIDs.csv with new names for every batch_ID, see example
-tmp_new_IDs=out_path+'/'+batch_ID+'-tmp_new_IDs.csv'
-new_IDs=out_path+'/'+batch_ID+'-new_IDs.csv'
+tmp_new_IDs=out_path+'/'+batch_ID+'-tmp_new_IDs.txt'
+new_IDs=out_path+'/'+batch_ID+'-new_IDs.txt'
 
 with open(in_IDs,'r+') as input_IDs, open(tmp_new_IDs,'w+') as reformatted_IDs:
 

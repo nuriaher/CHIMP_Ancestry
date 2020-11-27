@@ -20,7 +20,6 @@ batch_ID=args.batch_ID
 
 
 ## Run
-################### INPUT IS NOW DIFFERENT
 
 with open(new_IDs,'r') as IDs:
     reference_panel=list()
@@ -37,7 +36,9 @@ with open(new_IDs,'r') as IDs:
 
 
     for individual in to_test:
-        ID=individual.split('\t')
+        ID=individual.split('\t')[0]
+
+        # Define path to new .bed and .txt files
         individual_bed_base = out_base+'-'+ID
         individual_ID = out_base+'-'+ID+'.txt'
 
@@ -52,11 +53,12 @@ with open(new_IDs,'r') as IDs:
 
         #####################
         ## PLINK filtering of individual bed
+        #####################
 
         # remove sex non-somatic chromosomes and Donald (hybrid chimp, out of RefPanel)
         file = os.path.dirname(sys.argv[0])
         curr_dir = os.path.abspath(file)
-        donald_path=str(curr_dir+'/../suppl/donald_rm.txt')
+        donald_path=str(curr_dir+'/../data/donald_rm.txt')
         plink2Cmd='plink --file '+individual_bed_base+' --not-chr X,Y --remove '+donald_path+' --recode --out '+individual_bed_base+'_somatic_rmDon'
         subprocess.Popen(plink2Cmd,shell=True).wait()
 

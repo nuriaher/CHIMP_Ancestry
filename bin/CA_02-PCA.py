@@ -1,8 +1,8 @@
 #### 26.11.20
 import subprocess
 import argparse
+import sys
 import os
-import re
 
 
 #Argument parsing
@@ -35,7 +35,11 @@ if args.pca_plot:
     out_evalues=''+out_base+'.eigenval'
     out_evectors=''+out_base+'.eigenvec'
 
-    pcaplotCmd='Rscript CA_02-PCAPlot.R --eval '+out_evalues+' --evec '+out_evectors+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -out_path '+out_path+''
+    # Get current directory
+    file = os.path.dirname(sys.argv[0])
+    curr_dir = os.path.abspath(file)
+
+    pcaplotCmd='Rscript '+curr_dir+'/CA_02.1-PCA_Plot.R --eval '+out_evalues+' --evec '+out_evectors+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -out_path '+out_path+''
     subprocess.Popen(pcaplotCmd,shell=True).wait()
 
 else:
