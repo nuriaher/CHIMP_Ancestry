@@ -7,7 +7,7 @@ import os
 
 #Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
-parser.add_argument('-filt_bed', help="filtering step PLINK output", dest="filt_bed", required=True)
+parser.add_argument('-in_bed', help="filtering step PLINK output", dest="in_bed", required=True)
 parser.add_argument('--pca_plot', help="Wants to get a .pdf PCA Plot", dest="input", required=True)
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
 parser.add_argument('-batch_ID', help="batch_ID", dest="batch_ID", required=True)
