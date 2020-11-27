@@ -1,0 +1,2 @@
+#batchID,vcf_path, Family and Within-family IDs file path
+CHIMPS_ZOO1 home/users/me/Chimps_ZOO1.vcf home/users/me/Chimps_ZOO1_IDs.txt

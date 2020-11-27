@@ -9,12 +9,10 @@ import os
 ############# CHIMP Ancestry Pipeline EEP ################
 ##########################################################
 
-#a = system("echo This_is_the_output", intern = TRUE)
-
 # Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
 parser.add_argument('-input', help="batchID, vcf file path, Family and Within-family IDs file path", dest="pca_plot", action='store_true')
-parser.add_argument('--pca_plot', help="Wants to get a .pdf PCA Plot", dest="input", required=True)
+parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="input", required=True)
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
 args = parser.parse_args()
 
@@ -32,15 +30,16 @@ ID_file=list()
 
 with open(input,'r') as input_data:
     for line in input_data:
-        line.split(',')
+        if not (line.startswith('#')):
+            line.split(' ')
 
-        if not(len(line) == 3):
-            print("Input file error.\nFormat reminder:\n\tbatch_ID,VCF_path,ID_file_path")
+            if not(len(line) == 3):
+                print("Input file error.\nFormat reminder:\n\tbatch_ID,VCF_path,ID_file_path")
 
-        if len(line) == 3:
-            batch_ID.append(line[0])
-            VCF_path.append(line[1])
-            ID_file.append(line[2])
+            if len(line) == 3:
+                batch_ID.append(line[0])
+                VCF_path.append(line[1])
+                ID_file.append(line[2])
 
 ## Run
 
