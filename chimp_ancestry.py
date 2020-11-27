@@ -11,8 +11,8 @@ import os
 
 # Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
-parser.add_argument('-input', help="batchID, vcf file path, Family and Within-family IDs file path", dest="pca_plot", action='store_true')
-parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="input", required=True)
+parser.add_argument('-input', help="batchID, vcf file path, Family and Within-family IDs file path", dest="input", required=True)
+parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
 args = parser.parse_args()
 
@@ -29,17 +29,22 @@ VCF_path=list()
 ID_file=list()
 
 with open(input,'r') as input_data:
+
     for line in input_data:
-        if not (line.startswith('#')):
-            line.split(' ')
+        line = line.strip()
 
-            if not(len(line) == 3):
-                print("Input file error.\nFormat reminder:\n\tbatch_ID,VCF_path,ID_file_path")
+        if not line or line.startswith('#'): #line is blank or starts with #
+            continue
 
-            if len(line) == 3:
-                batch_ID.append(line[0])
-                VCF_path.append(line[1])
-                ID_file.append(line[2])
+        line.split(' ')
+
+        if not(len(line) == 3):
+            print("Input file error.\nFormat reminder:\n\tbatch_ID VCF_path ID_file_path")
+
+        if len(line) == 3:
+            batch_ID.append(line[0])
+            VCF_path.append(line[1])
+            ID_file.append(line[2])
 
 ## Run
 
@@ -52,7 +57,7 @@ for i in range(len(bach_ID)):
 
 
         ## 1.1 - VCF filtering and Renaming
-    output_11=out_path+'/'+batch_ID+'-in_Plink_reformat' ####### ####### ####### ####### ####### ####### #######  ADD EXTENSION WHEN RUN
+    output_11=out_path+'/'+batch_ID+'-in_Plink_reformat'
     new_IDs=out_path+'/'+batch_ID[i]+'-new_IDs.txt'
 
     filtering1Cmd='python '+current_dir+'/bin/CA_01.1-Filter-VCF_Rename.py -in_VCF '+VCF_path[i]+' -in_IDs '+ID_file[i]+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_filtering+''
@@ -95,7 +100,6 @@ for i in range(len(bach_ID)):
             subprocess.Popen(pcaCmd,shell=True).wait()
 
 
-
         #####################    #####################
         ### 3 - ADMIXTURE - Reference Panel x 1 Query Individual (avoid relatedness bias)
         #####################    #####################
@@ -108,6 +112,13 @@ for i in range(len(bach_ID)):
         ### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
         #####################    #####################
 
+        # Define PLINK basename for file
+        bed_base = bed.replace(".bed","")
+        output_4 = out_path_filtering+'/'+batch_ID[i]+'-'+individual_ID+'.txt'
+        threads = 1
+
+        evaladmixCmd='python '+current_dir+'/bin/CA_04-EvalAdmix.py -bed_base '+bed_base+' -output '+output_4+' -t '+threads+''
+        subprocess.Popen(evaladmixCmd,shell=True).wait()
 
 
         #####################    #####################
