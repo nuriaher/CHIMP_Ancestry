@@ -26,7 +26,7 @@ vcf1Cmd='vcftools --gzvcf '+in_VCF+' --minDP 4 --minQ 30 --min-alleles 2 --max-a
 subprocess.Popen(vcf1Cmd,shell=True).wait()
 
 # convert to PLINK
-vcf2Cmd='vcftools --vcf '+out_path+'/'+batch_ID+'-filtered_VCF.recode.vcf --plink --out '+out_path+'/'+batch_ID+'-in_Plink'
+vcf2Cmd='vcftools --vcf '+out_path+'/'+batch_ID+'-filtered_VCF --plink --out '+out_path+'/'+batch_ID+'-in_Plink'
 subprocess.Popen(vcf2Cmd,shell=True).wait()
 
 # reformat file name in_IDs to new_IDs
@@ -66,22 +66,3 @@ subprocess.Popen(reformatfinalCmd,shell=True).wait()
 # update names (shorten names with subspecies abbreviated prefix)
 plink1Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.csv --recode --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
 subprocess.Popen(plink1Cmd,shell=True).wait()
-
-
-# remove sex non-somatic chromosomes and Donald (hybrid chimp, out of RefPanel)
-file = os.path.dirname(sys.argv[0])
-curr_dir = os.path.abspath(file)
-donald_path=str(curr_dir+'/../suppl/donald_rm.txt')
-plink2Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink_reformat --not-chr X,Y --remove '+donald_path+' --recode --out '+out_path+'/'+batch_ID+'-in_Plink_somatic_rmDon'
-subprocess.Popen(plink2Cmd,shell=True).wait()
-
-# minor allele freq 0.05 and missing data
-plink3Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink_somatic_rmDon --maf 0.05 --geno 0 --recode --out '+out_path+'/'+batch_ID+'-in_Plink_maf05_geno0'
-subprocess.Popen(plink3Cmd,shell=True).wait()
-
-# LD pruning
-plink4Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink_maf05_geno0 --indep-pairwise 50 5 0.5'
-subprocess.Popen(plink4Cmd,shell=True).wait()
-
-plink5Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink_maf05_geno0 --extract '+out_path+'/'+batch_ID+'-plink.prune.in --make-bed --out '+out_path+'/'+batch_ID+'-pruned.bed'
-subprocess.Popen(plink5Cmd,shell=True).wait()

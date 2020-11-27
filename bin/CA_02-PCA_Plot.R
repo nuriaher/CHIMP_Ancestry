@@ -5,13 +5,15 @@ library("ggplot2")
 parser <-  ArgumentParser(description='Runs Chimp Ancestry.')
 parser$add_argument('--eval', dest='eval', help='eigen values outputted by PLINK --pca', required=TRUE)
 parser$add_argument('--evec', dest='evec', help='eigen vectors outputted by PLINK --pca', required=TRUE)
-parser$add_argument('-batch_ID', dest='batch', help='sample batch analysed by PLINK --pca', required=TRUE)
+parser$add_argument('-ind_ID', dest='individual', help='individual bed analysed by PLINK --pca', required=TRUE)
+parser$add_argument('-batch_ID', dest='batch', help='sample batch', required=TRUE)
 parser$add_argument('-out_path', dest='out_path', help='directory to redirect output', required=TRUE)
 args <- parser$parse_args()
 
 # Define variables
 eval <- args$eval
 evec <- args$evec
+individual <- args$individual
 batch <- args$batch
 out_path <- args$out_path
 
@@ -28,7 +30,7 @@ names(evec_pc)[1] <- "IDs"
 names(evec_pc)[2:ncol(evec_pc)] <- paste0("PC", 1:(ncol(evec_pc)-1))
 
   # Generate Subspecies column - plot's sake
-evec_pc$subspp <- 'Unknown'
+evec_pc$subspp <- ''
 evec_pc$subspp[grep("P_t_troglodytes", evec_pc$IDs)] <- "Pt_troglodytes"
 evec_pc$subspp[grep("P_t_ellioti", evec_pc$IDs)] <- "Pt_ellioti"
 evec_pc$subspp[grep("P_t_verus", evec_pc$IDs)] <- "Pt_verus"
@@ -44,5 +46,5 @@ pca <- pca + scale_colour_manual(values = c("blue", "green", "purple", "orange",
 pca <- pca + coord_equal() + theme_light()
 pca + xlab(paste0("PC1 (", signif(p_eval$p_eval[1], 3), "%)")) + ylab(paste0("PC2 (", signif(p_eval$p_eval[2], 3), "%)"))
 
-ggsave(pca, device = NULL, path = out_path, filename = paste0("PCA_",batch,".pdf"))
+ggsave(pca, device = NULL, path = out_path, filename = paste0("PCA_",batch,"-",individual,".pdf"))
 
