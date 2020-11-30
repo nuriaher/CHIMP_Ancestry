@@ -41,7 +41,7 @@ with open(in_IDs,'r+') as input_IDs, open(new_IDs,'w+') as reformatted_IDs:
 
     for line in input_IDs.readlines():
 
-        if not len(line.split(' ')) == 4: # Reformat IDs
+        if not len(line.split('\t')) == 4: # Reformat IDs
 
             sublines=line.split()
             new_line=''
@@ -66,7 +66,7 @@ with open(in_IDs,'r+') as input_IDs, open(new_IDs,'w+') as reformatted_IDs:
                 else:
                     new_line+=subline
 
-            reformatted_IDs.write(line.strip()+'\t'+new_line+'\n')    
+            reformatted_IDs.write(line.strip()+'\t'+new_line+'\n')
 
         if len(line.split(' ')) == 4: # Names have already been reformated
             mvCmd='cp '+in_IDs+' '+new_IDs+''

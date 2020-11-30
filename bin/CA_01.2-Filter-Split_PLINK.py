@@ -20,9 +20,6 @@ new_IDs=args.new_IDs
 out_base=args.out_base
 batch_ID=args.batch_ID
 
-# Create output directory
-os.mkdir(out_base)
-
 ## Run
 
 with open(new_IDs,'r') as IDs:
@@ -57,7 +54,7 @@ with open(new_IDs,'r') as IDs:
         # Check if file exists
         if not (os.path.exists(str(individual_bed_base+'.bed'))):
         # Generate individual file + reference panel
-            keepCmd='plink1 --file '+in_plink+' --keep '+individual_ID+' --make-bed --out '+individual_bed_base+''
+            keepCmd='plink1 --file '+in_plink+' --keep '+individual_ID+' --recode --out '+individual_bed_base+''
             subprocess.Popen(keepCmd,shell=True).wait()
 
 
@@ -69,6 +66,8 @@ with open(new_IDs,'r') as IDs:
             file = os.path.dirname(sys.argv[0])
             curr_dir = os.path.abspath(file)
             donald_path=str(curr_dir+'/../data/donald_rm.txt')
+            #donald_path=str(curr_dir+'/../CHIMP_Ancestry/data/donald_rm.txt')
+
             plink2Cmd='plink1 --file '+individual_bed_base+' --not-chr X,Y --remove '+donald_path+' --recode --out '+individual_bed_base+'_somatic_rmDon'
             subprocess.Popen(plink2Cmd,shell=True).wait()
 

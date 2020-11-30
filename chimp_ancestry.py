@@ -1,5 +1,8 @@
+# coding=utf-8
+
 #Núria Hermosilla-Albala
 #20.11.20
+
 import argparse
 import subprocess
 import glob
@@ -41,7 +44,7 @@ with open(input,'r') as input_data:
         if not line or line.startswith('#'): #line is blank or starts with #
             continue
 
-        line.split(' ')
+        line = line.split(' ')
 
         if not(len(line) == 3):
             print("Input file error.\nFormat reminder:\n\tbatch_ID VCF_path ID_file_path")
@@ -53,19 +56,21 @@ with open(input,'r') as input_data:
 
 ## Run
 
-for i in range(len(bach_ID)):
+for i in range(len(batch_ID)):
 
     #####################    #####################
     ### 1 - VCF from NGS variant calling Filtering
     #####################    #####################
     out_path_filtering=out_path+'/CA_01-Filtering/'+batch_ID[i]
+    if not os.path.exists(out_path_filtering):
+        os.mkdir(out_path_filtering)
 
 
         ## 1.1 - VCF filtering and Renaming
-    output_11=out_path+'/'+batch_ID+'-in_Plink_reformat'
+    output_11=out_path+'/'+batch_ID[i]+'-in_Plink_reformat'
     new_IDs=out_path+'/'+batch_ID[i]+'-new_IDs.txt'
 
-    filtering1Cmd='python '+current_dir+'/bin/CA_01.1-Filter-VCF_Rename.py -in_VCF '+VCF_path[i]+' -in_IDs '+ID_file[i]+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_filtering+''
+    filtering1Cmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_01.1-Filter-VCF_Rename.py -in_VCF '+VCF_path[i]+' -in_IDs '+ID_file[i]+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_filtering+''
     subprocess.Popen(filtering1Cmd,shell=True).wait()
 
 
@@ -73,7 +78,7 @@ for i in range(len(bach_ID)):
 
     output_12_base=out_path_filtering+'/'+batch_ID[i]
 
-    filtering2Cmd='python '+current_dir+'/bin/CA_01.2-Filter-Split_PLINK.py -in_bed '+output_11+' -new_IDs '+new_IDs+' -batch_ID '+batch_ID[i]+' -out_base '+output_12_base+''
+    filtering2Cmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_01.2-Filter-Split_PLINK.py -in_plink '+output_11+' -new_IDs '+new_IDs+' -batch_ID '+batch_ID[i]+' -out_base '+output_12_base+''
     subprocess.Popen(filtering2Cmd,shell=True).wait()
 
 
@@ -101,12 +106,14 @@ for i in range(len(bach_ID)):
         #####################    #####################
 
         out_path_pca = out_path+'/CA_02-PCA/'+batch_ID[i]
+        if not os.path.exists(out_path_pca):
+            os.mkdir(out_path_pca)
 
         if args.pca_plot:
-            pcaCmd='python '+current_dir+'/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' --pca_plot'
+            pcaCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' --pca_plot'
             subprocess.Popen(pcaCmd,shell=True).wait()
         else:
-            pcaCmd='python '+current_dir+'/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+''
+            pcaCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+''
             subprocess.Popen(pcaCmd,shell=True).wait()
 
 
@@ -115,13 +122,15 @@ for i in range(len(bach_ID)):
         #####################    #####################
 
         out_path_admx = out_path+'/CA_03-Admixture/'+batch_ID[i]
+        if not os.path.exists(out_path_admx):
+            os.mkdir(out_path_admx)
 
         if args.t_admixture:
-            admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+' -t '+args.t_admixture+''
+            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+' -t '+args.t_admixture+''
             subprocess.Popen(admixtureCmd,shell=True).wait()
 
         else:
-            admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+''
+            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+''
             subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
@@ -132,14 +141,17 @@ for i in range(len(bach_ID)):
 
         # Define PLINK basename for file
         out_path_evaladmix = out_path+'/CA_04-evalAdmix/'+batch_ID[i]
+        if not os.path.exists(out_path_evaladmix):
+            os.mkdir(out_path_evaladmix)
+
         output_4 = out_path_evaladmix+'/'+batch_ID[i]+'-'+individual_ID+'.txt'
 
         if args.t_evaladmix:
-            evaladmixCmd='python '+current_dir+'/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -output '+output_4+' -t '+t_evaladmix+''
+            evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -output '+output_4+' -t '+t_evaladmix+''
             subprocess.Popen(evaladmixCmd,shell=True).wait()
 
         else:
-            evaladmixCmd='python '+current_dir+'/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -output '+output_4+''
+            evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -output '+output_4+''
             subprocess.Popen(evaladmixCmd,shell=True).wait()
 
 
@@ -171,13 +183,15 @@ for i in range(len(bach_ID)):
         #####################    #####################
 
             out_path_ngsrelate = out_path+'/CA_05-NGSRelate2/'+batch_ID[i]+'/'+batch_ID[i]
+            if not os.path.exists(out_path_ngsrelate):
+                os.mkdir(out_path_ngsrelate)
 
             if args.t_ngsrelate:
-                ngsrelateCmd='python '+current_dir+'/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+' -t '+t_ngsrelate+''
+                ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+' -t '+t_ngsrelate+''
                 subprocess.Popen(ngsrelateCmd,shell=True).wait()
 
             else:
-                ngsrelateCmd='python '+current_dir+'/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+''
+                ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+''
                 subprocess.Popen(ngsrelateCmd,shell=True).wait()
 
 
