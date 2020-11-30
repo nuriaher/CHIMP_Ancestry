@@ -21,13 +21,16 @@ batch_ID=args.batch_ID
 
 ## Run
 
+if not (os.path.exists(out_path+'/'+batch_ID+'-filtered_VCF.recode.vcf')):
 # remove indels, only biallelic, minimum quality 30, minimum depth 4
-vcf1Cmd='vcftools --gzvcf '+in_VCF+' --minDP 4 --minQ 30 --min-alleles 2 --max-alleles 2 --remove-indels --recode --out '+out_path+'/'+batch_ID+'-filtered_VCF'
-subprocess.Popen(vcf1Cmd,shell=True).wait()
+    vcf1Cmd='vcftools --gzvcf '+in_VCF+' --minDP 4 --minQ 30 --min-alleles 2 --max-alleles 2 --remove-indels --recode --out '+out_path+'/'+batch_ID+'-filtered_VCF'
+    subprocess.Popen(vcf1Cmd,shell=True).wait()
 
+if not (os.path.exists(out_path+'/'+batch_ID+'-in_Plink.map')):
 # convert to PLINK
-vcf2Cmd='vcftools --vcf '+out_path+'/'+batch_ID+'-filtered_VCF --plink --out '+out_path+'/'+batch_ID+'-in_Plink'
-subprocess.Popen(vcf2Cmd,shell=True).wait()
+    vcf2Cmd='vcftools --vcf '+out_path+'/'+batch_ID+'-filtered_VCF.recode.vcf --plink --out '+out_path+'/'+batch_ID+'-in_Plink'
+    subprocess.Popen(vcf2Cmd,shell=True).wait()
+
 
 # reformat file name in_IDs to new_IDs
     # Generate newIDs.csv with new names for every batch_ID, see example
