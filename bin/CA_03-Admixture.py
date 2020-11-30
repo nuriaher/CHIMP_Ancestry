@@ -24,4 +24,4 @@ admixtureCmd='admixture '+filt_bed+' '+k+''
 subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
-######## MOVE OUTPUTS TO ADMIXTURE PATH
+######## MOVE OUTPUTS TO ADMIXTURE PATH ########## how are output files called?

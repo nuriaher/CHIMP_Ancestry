@@ -42,7 +42,8 @@ with open(in_IDs,'r+') as input_IDs, open(tmp_new_IDs,'w+') as reformatted_IDs:
     for line in input_IDs.readlines():
 
         if len(line.split(' ')) == 4: # Names have already been reformated
-            in_IDs = new_IDs
+            mvCmd='cp '+in_IDs+' '+new_IDs+''
+            subprocess.Popen(mvCmd,shell=True).wait()
             pass
 
         if not len(line.split(' ')) == 4: # Reformat IDs
@@ -62,10 +63,10 @@ with open(in_IDs,'r+') as input_IDs, open(tmp_new_IDs,'w+') as reformatted_IDs:
             reformatted_IDs.write(line)
 
 
-reformatfinalCmd='paste '+in_IDs+' '+tmp_new_IDs+' -d '"\t"' > '+new_IDs+' && rm '+tmp_new_IDs+''
-subprocess.Popen(reformatfinalCmd,shell=True).wait()
+            reformatfinalCmd='paste '+in_IDs+' '+tmp_new_IDs+' -d '"\t"' > '+new_IDs+' && rm '+tmp_new_IDs+''
+            subprocess.Popen(reformatfinalCmd,shell=True).wait()
 
 
 # update names (shorten names with subspecies abbreviated prefix)
-plink1Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.csv --recode --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
+plink1Cmd='plink --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.txt --recode --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
 subprocess.Popen(plink1Cmd,shell=True).wait()

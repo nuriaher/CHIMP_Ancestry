@@ -30,9 +30,9 @@ with open(new_IDs,'r') as IDs:
         line = line.split()
 
         if 'P_t' in line:
-            reference_panel.append(str(line[2]+'\t'+line[3]))
+            reference_panel.append(str(line[2]+'\t'+line[3]+'\n'))
         else:
-            to_test.append(str(line[2]+'\t'+line[3]))
+            to_test.append(str(line[2]+'\t'+line[3]+'\n'))
 
 
     for individual in to_test:
@@ -44,18 +44,22 @@ with open(new_IDs,'r') as IDs:
 
         # Create individual ID.txt file + reference panel
         with open(individual_ID,'w+') as ID_file:
-            ID_file.write(individual+'\n'+reference_panel)
+            ID_file.write(individual+reference_panel)
 
+
+        # Check if file exists
+        indv_exists = glob.glob(individual_bed_base+'*')
+        if not (os.path.exists(str(indv_exists[0]))):
         # Generate individual file + reference panel
-        keepCmd='plink1 --bfile '+in_bed+' --keep '+individual_ID+' --make-bed --out '+individual_bed_base+''
-        subprocess.Popen(keepCmd).wait()
+            keepCmd='plink1 --bfile '+in_bed+' --keep '+individual_ID+' --make-bed --out '+individual_bed_base+''
+            subprocess.Popen(keepCmd).wait()
 
 
         #####################
-        ## PLINK filtering of individual bed
+        ## PLINK filtering of individual data
         #####################
 
-        # remove sex non-somatic chromosomes and Donald (hybrid chimp, out of RefPanel)
+        # remove sex non-somatic chromosomes and Donald (hybrid chimp, take out of RefPanel)
         file = os.path.dirname(sys.argv[0])
         curr_dir = os.path.abspath(file)
         donald_path=str(curr_dir+'/../data/donald_rm.txt')
