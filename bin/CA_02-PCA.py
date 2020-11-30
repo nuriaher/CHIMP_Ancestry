@@ -7,14 +7,14 @@ import os
 
 #Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
-parser.add_argument('-in_bed', help="filtering step PLINK output", dest="in_bed", required=True)
+parser.add_argument('-plink_base', help="filtering step PLINK output", dest="plink_base", required=True)
 parser.add_argument('--pca_plot', help="Wants to get a .pdf PCA Plot", dest="input", required=True)
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
 parser.add_argument('-batch_ID', help="batch_ID", dest="batch_ID", required=True)
 parser.add_argument('-ind_ID', help="individual ID", dest="ind_ID", required=True)
 args = parser.parse_args()
 
-filt_bed=args.filt_bed
+plink_base=args.plink_base
 out_path=args.out_path
 ind_ID=args.ind_ID
 batch_ID=args.batch_ID
@@ -26,7 +26,7 @@ batch_ID=args.batch_ID
     # Generate .eigenvalues .eigenvectors files
 out_base=out_path+'/'+batch_ID+'/'+ind_ID
 
-pcaCmd='plink1 --bfile '+filt_bed+' --pca 10 --out '+out_base+''
+pcaCmd='plink1 --bfile '+plink_base+' --pca 10 --out '+out_base+''
 subprocess.Popen(pcaCmd,shell=True).wait()
 
 

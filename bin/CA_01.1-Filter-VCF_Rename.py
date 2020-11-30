@@ -54,7 +54,7 @@ with open(in_IDs,'r+') as input_IDs, open(new_IDs,'w+') as reformatted_IDs:
                 if 'Pan_troglodytes' in subline:
                     subline = re.sub('Pan_troglodytes','P_t',subline)
 
-                if not (subline.startswith('P_')):
+                if not (subline.startswith('P_t')):
                     if 'chimp' in subline:
                         subline = re.sub('chimp','ZOOChimp_',subline)
                     else:
@@ -66,8 +66,7 @@ with open(in_IDs,'r+') as input_IDs, open(new_IDs,'w+') as reformatted_IDs:
                 else:
                     new_line+=subline
 
-            reformatted_IDs.write(line.strip()+'\t'+new_line+'\n')    # reformatfinalCmd='paste '+in_IDs+' '+tmp_new_IDs+' > '+new_IDs+'' #&& rm '+tmp_new_IDs+''
-                                                        # subprocess.Popen(reformatfinalCmd,shell=True).wait()
+            reformatted_IDs.write(line.strip()+'\t'+new_line+'\n')    
 
         if len(line.split(' ')) == 4: # Names have already been reformated
             mvCmd='cp '+in_IDs+' '+new_IDs+''

@@ -11,9 +11,14 @@ import os
 
 # Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
+    # Required arguments
 parser.add_argument('-input', help="batchID, vcf file path, Family and Within-family IDs file path", dest="input", required=True)
-parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
+    # Optional arguments
+parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
+parser.add_argument('--t_admixture', help="admixture number of threads, default 10", dest="t_admixture")
+parser.add_argument('--t_ngsrelate', help="ngsrelate number of threads, default 4", dest="t_ngsrelate")
+parser.add_argument('--t_evaladmix', help="ngsrelate number of threads, default 1", dest="t_ngsrelate")
 args = parser.parse_args()
 
 input=args.input
@@ -81,12 +86,14 @@ for i in range(len(bach_ID)):
             ## 1.3 - Retrieve individual files - keep pipeline
 
     # Get full paths of all individual .bed files
-    bed_individuals=glob.glob(out_path_filtering+'/*.bed') ##################### ##################### ##################### ##################### ##################### ##################### ##################### #####################  CHECK IF .bed
-    for bed in bed_individuals:
+    files_individuals=glob.glob(out_path_filtering+'/*.map')
+    for file in files_individuals:
 
-        individual_ID=os.path.basename(bed)
+        individual_ID=os.path.basename(file)
         individual_ID=individual_ID.replace(batch_ID[i]+'-pruned','')
-        individual_ID=individual_ID.replace('.bed','')
+        individual_ID=individual_ID.replace('.map','')
+
+        plink_base=file.replace('.map','')
 
 
         #####################    #####################
@@ -96,10 +103,10 @@ for i in range(len(bach_ID)):
         out_path_pca = out_path+'/CA_02-PCA/'+batch_ID[i]
 
         if args.pca_plot:
-            pcaCmd='python '+current_dir+'/bin/CA_02-PCA.py -filt_bed '+bed+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' --pca_plot'
+            pcaCmd='python '+current_dir+'/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' --pca_plot'
             subprocess.Popen(pcaCmd,shell=True).wait()
         else:
-            pcaCmd='python '+current_dir+'/bin/CA_02-PCA.py -filt_bed '+bed+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+''
+            pcaCmd='python '+current_dir+'/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+''
             subprocess.Popen(pcaCmd,shell=True).wait()
 
 
@@ -109,8 +116,13 @@ for i in range(len(bach_ID)):
 
         out_path_admx = out_path+'/CA_03-Admixture/'+batch_ID[i]
 
-        admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -filt_bed '+bed+' -out_path '+out_path_admx+'/'+individual_ID+''
-        subprocess.Popen(admixtureCmd,shell=True).wait()
+        if args.t_admixture:
+            admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+' -t '+args.t_admixture+''
+            subprocess.Popen(admixtureCmd,shell=True).wait()
+
+        else:
+            admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+''
+            subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
         #####################    #####################
@@ -119,13 +131,26 @@ for i in range(len(bach_ID)):
 
 
         # Define PLINK basename for file
-        bed_base = bed.replace(".bed","")
         out_path_evaladmix = out_path+'/CA_04-evalAdmix/'+batch_ID[i]
         output_4 = out_path_evaladmix+'/'+batch_ID[i]+'-'+individual_ID+'.txt'
-        threads = 4        # Customisable
 
-        evaladmixCmd='python '+current_dir+'/bin/CA_04-EvalAdmix.py -bed_base '+bed_base+' -output '+output_4+' -t '+threads+''
-        subprocess.Popen(evaladmixCmd,shell=True).wait()
+        if args.t_evaladmix:
+            evaladmixCmd='python '+current_dir+'/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -output '+output_4+' -t '+t_evaladmix+''
+            subprocess.Popen(evaladmixCmd,shell=True).wait()
+
+        else:
+            evaladmixCmd='python '+current_dir+'/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -output '+output_4+''
+            subprocess.Popen(evaladmixCmd,shell=True).wait()
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -147,8 +172,13 @@ for i in range(len(bach_ID)):
 
             out_path_ngsrelate = out_path+'/CA_05-NGSRelate2/'+batch_ID[i]+'/'+batch_ID[i]
 
-            ngsrelateCmd='python '+current_dir+'/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+''
-            subprocess.Popen(ngsrelateCmd,shell=True).wait()
+            if args.t_ngsrelate:
+                ngsrelateCmd='python '+current_dir+'/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+' -t '+t_ngsrelate+''
+                subprocess.Popen(ngsrelateCmd,shell=True).wait()
+
+            else:
+                ngsrelateCmd='python '+current_dir+'/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+''
+                subprocess.Popen(ngsrelateCmd,shell=True).wait()
 
 
         #####################    #####################

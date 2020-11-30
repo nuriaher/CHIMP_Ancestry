@@ -7,12 +7,18 @@ import re
 
 #Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
-parser.add_argument('-filt_bed', help="filtering step PLINK output", dest="filt_bed", required=True)
+parser.add_argument('-plink_ped', help="filtering step PLINK output", dest="plink_ped", required=True)
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
+parser.add_argument('-t', help="threads", dest="threads")
 args = parser.parse_args()
 
-filt_bed=args.filt_bed
+plink_ped=args.plink_ped
 out_path=args.out_path
+
+if not args.threads: #default
+    t=10
+else:
+    t=args.threads
 
 ## Run
 
@@ -20,7 +26,7 @@ out_path=args.out_path
 k = 4
 
 # Run admixture
-admixtureCmd='admixture '+filt_bed+' '+k+''
+admixtureCmd='admixture '+plink_ped+' '+k+' -j'+t+'
 subprocess.Popen(admixtureCmd,shell=True).wait()
 
 

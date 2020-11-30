@@ -7,14 +7,18 @@ import os
 
 #Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
-parser.add_argument('-bed_base', help="filtered PLINK output base", dest="bed_base", required=True)
+parser.add_argument('-plink_base', help="filtered PLINK output base", dest="plink_base", required=True)
 parser.add_argument('-output', help="output file", dest="output", required=True)
-parser.add_argument('-t', help="threads", dest="threads", required=True)
+parser.add_argument('-t', help="threads", dest="threads")
 args = parser.parse_args()
 
-bed_base=args.bed_base
+plink_base=args.plink_base
 output=args.output
-threads=args.threads
+
+if args.threads:
+    threads=args.threads
+else:
+    threads=1
 
 
 
@@ -24,5 +28,5 @@ threads=args.threads
 #fname path to ancestral population frequencies file (space delimited matrix where rows are sites and columns ancestral populations)
 #path to admixture proportions file (space delimited matrix where rows are individuals and columns ancestral populations)
 
-evaladmixCmd='./evalAdmix -plink '+bed_base+' -fname '+bed_base+'.K.P -qname '+bed_base+'.K.Q -P '+threads+' -o '+output+''
+evaladmixCmd='./evalAdmix -plink '+plink_base+' -fname '+bed_base+'.K.P -qname '+bed_base+'.K.Q -P '+threads+' -o '+output+''
 subprocess.Popen(evaladmixCmd).wait()
