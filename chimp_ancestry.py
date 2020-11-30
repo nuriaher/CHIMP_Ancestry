@@ -81,7 +81,7 @@ for i in range(len(bach_ID)):
             ## 1.3 - Retrieve individual files - keep pipeline
 
     # Get full paths of all individual .bed files
-    bed_individuals=glob.glob(out_path_filtering+'/'+batch_ID[i]+'*')
+    bed_individuals=glob.glob(out_path_filtering+'/*.bed') ##################### ##################### ##################### ##################### ##################### ##################### ##################### #####################  CHECK IF .bed
     for bed in bed_individuals:
 
         individual_ID=os.path.basename(bed)
@@ -109,7 +109,7 @@ for i in range(len(bach_ID)):
 
         out_path_admx = out_path+'/CA_03-Admixture/'+batch_ID[i]
 
-        admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -filt_bed '+bed+' -out_path '+out_path_admx+''
+        admixtureCmd='python '+current_dir+'/bin/CA_03-Admixture.py -filt_bed '+bed+' -out_path '+out_path_admx+'/'+individual_ID+''
         subprocess.Popen(admixtureCmd,shell=True).wait()
 
 

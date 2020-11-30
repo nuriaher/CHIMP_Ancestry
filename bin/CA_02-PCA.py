@@ -24,7 +24,7 @@ batch_ID=args.batch_ID
 ## Run
 
     # Generate .eigenvalues .eigenvectors files
-out_base=out_path+'/'+batch_ID'-'+ind_ID
+out_base=out_path+'/'+batch_ID+'/'+ind_ID
 
 pcaCmd='plink1 --bfile '+filt_bed+' --pca 10 --out '+out_base+''
 subprocess.Popen(pcaCmd,shell=True).wait()
