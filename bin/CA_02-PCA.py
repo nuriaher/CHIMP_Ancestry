@@ -26,7 +26,10 @@ batch_ID=args.batch_ID
     # Generate .eigenvalues .eigenvectors files
 out_base=out_path+'/'+batch_ID+'/'+ind_ID
 
-pcaCmd='plink1 --bfile '+plink_base+' --pca 10 --out '+out_base+''
+bedCmd='plink1.9 --file '+plink_base+' --make-bed --out '+plink_base+''
+subprocess.Popen(pcaCmd,shell=True).wait()
+
+pcaCmd='plink1.9 --bfile '+plink_base+' --pca 10 --out '+out_base+' && rm '+plink_base+'*.bed '+plink_base+'*.bim '+plink_base+'*.fam'
 subprocess.Popen(pcaCmd,shell=True).wait()
 
 

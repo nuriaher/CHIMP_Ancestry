@@ -34,5 +34,5 @@ subprocess.Popen(admixtureCmd,shell=True).wait()
 admix_output_base= '*'
 
 
-mvCmd='mv '+OUTPUTS+' '+out_path+''
-subprocess.Popen(mvCmd,shell=True).wait()
+#mvCmd='mv '+OUTPUTS+' '+out_path+''
+#subprocess.Popen(mvCmd,shell=True).wait()

@@ -1,0 +1,2 @@
+#batchID,vcf_path, Family and Within-family IDs file path
+ZOOChimp_BVI /isdata/hansgrp/pfrandsen/Projects/Student/Nuria/data/Hvilsom_ZOOchimp_BVI_all.g.vcf.gz /isdata/hansgrp/pfrandsen/Projects/Student/Nuria/CHIMP_Ancestry/data/newNAMES_batchVI.txt

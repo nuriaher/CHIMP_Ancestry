@@ -1,5 +1,5 @@
 
- -bed_base '+bed_base+' -ancestral_pp '+ancestry+' -individual_ID '+individual_ID+' -out_path'
+ #-bed_base '+bed_base+' -ancestral_pp '+ancestry+' -individual_ID '+individual_ID+' -out_path'
 
 #### 27.11.20
 import subprocess

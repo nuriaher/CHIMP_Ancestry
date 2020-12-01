@@ -1,0 +1,1 @@
+ZOOChimp_BIV_V /isdata/hansgrp/pfrandsen/Projects/Student/Nuria/data/Hvilsom_ZOOchimp_BIV_V_all.g.vcf.gz /isdata/hansgrp/pfrandsen/Projects/Student/Nuria/CHIMP_Ancestry/data/newNAMES_batchVI.txt

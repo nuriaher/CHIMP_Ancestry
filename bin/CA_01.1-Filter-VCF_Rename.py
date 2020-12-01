@@ -31,50 +31,49 @@ if not (os.path.exists(out_path+'/'+batch_ID+'-in_Plink.map')):
     vcf2Cmd='vcftools --vcf '+out_path+'/'+batch_ID+'-filtered_VCF.recode.vcf --plink --out '+out_path+'/'+batch_ID+'-in_Plink'
     subprocess.Popen(vcf2Cmd,shell=True).wait()
 
-
-# reformat file name in_IDs to new_IDs
-    # Generate newIDs.csv with new names for every batch_ID, see example
-#tmp_new_IDs=out_path+'/'+batch_ID+'-tmp_new_IDs.txt'
 new_IDs=out_path+'/'+batch_ID+'-new_IDs.txt'
+if not (os.path.exists(new_IDs)):
+    # reformat file name in_IDs to new_IDs
+        # Generate newIDs.csv with new names for every batch_ID, see example
 
-with open(in_IDs,'r+') as input_IDs, open(new_IDs,'w+') as reformatted_IDs:
+    with open(in_IDs,'r+') as input_IDs, open(new_IDs,'w+') as reformatted_IDs:
 
-    for line in input_IDs.readlines():
+        for line in input_IDs.readlines():
 
-        if not len(line.split('\t')) == 4: # Reformat IDs
+            if not len(line.split('\t')) == 4: # Reformat IDs
 
-            sublines=line.split()
-            new_line=''
-            n=1
-            for subline in sublines:
+                sublines=line.split()
+                new_line=''
+                n=1
+                for subline in sublines:
 
-                if '.variant' in subline:
-                    subline = re.sub('\.variant[0-9]*','',subline)
+                    if '.variant' in subline:
+                        subline = re.sub('\.variant[0-9]*','',subline)
 
-                if 'Pan_troglodytes' in subline:
-                    subline = re.sub('Pan_troglodytes','P_t',subline)
+                    if 'Pan_troglodytes' in subline:
+                        subline = re.sub('Pan_troglodytes','Pt',subline)
 
-                if not (subline.startswith('P_t')):
-                    if 'chimp' in subline:
-                        subline = re.sub('chimp','ZOOChimp_',subline)
+                    if not (subline.startswith('Pt')):
+                        if 'chimp' in subline:
+                            subline = re.sub('chimp','ZOOChimp_',subline)
+                        else:
+                            subline = 'ZOOChimp_'+subline
+
+                    if n==1:
+                        new_line+=subline+'\t'
+                        n+=1
                     else:
-                        subline = 'ZOOChimp_'+subline
+                        new_line+=subline
 
-                if n==1:
-                    new_line+=subline+'\t'
-                    n+=1
-                else:
-                    new_line+=subline
+                reformatted_IDs.write(line.strip()+'\t'+new_line+'\n')
 
-            reformatted_IDs.write(line.strip()+'\t'+new_line+'\n')
-
-        if len(line.split(' ')) == 4: # Names have already been reformated
-            mvCmd='cp '+in_IDs+' '+new_IDs+''
-            subprocess.Popen(mvCmd,shell=True).wait()
+            if len(line.split(' ')) == 4: # Names have already been reformated
+                mvCmd='cp '+in_IDs+' '+new_IDs+''
+                subprocess.Popen(mvCmd,shell=True).wait()
 
 
 
-if os.path.exists(new_IDs):
+if not (os.path.exists(out_path+'/'+batch_ID+'-in_Plink_reformat.map')):
 # update names (shorten names with subspecies abbreviated prefix)
-    plink1Cmd='plink1 --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.txt --recode --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
+    plink1Cmd='plink1.9 --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.txt --recode --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
     subprocess.Popen(plink1Cmd,shell=True).wait()
