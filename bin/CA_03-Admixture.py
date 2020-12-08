@@ -31,7 +31,7 @@ subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
 ######## MOVE OUTPUTS TO ADMIXTURE PATH ########## how are output files called?
-admix_output_base= '*'
+#admix_output_base= '*'
 
 
 #mvCmd='mv '+OUTPUTS+' '+out_path+''
