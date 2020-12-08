@@ -18,14 +18,14 @@ batch <- args$batch
 out_path <- args$out_path
 
 # Read PLINK output
-evec_pc <- read_table2(evec, col_names = FALSE)
+evec_pc <- read.table2(evec, col.names = F)
 eval_pc <- scan(eval)
 
 # Fix data to plot
   # Remove nuisance column - plink outputs the individual ID twice
 evec_pc <- evec_pc[,-1]
 
-  # Give columns proper names
+  # Give columns proper names 
 names(evec_pc)[1] <- "IDs"
 names(evec_pc)[2:ncol(evec_pc)] <- paste0("PC", 1:(ncol(evec_pc)-1))
 
@@ -47,3 +47,4 @@ pca <- pca + coord_equal() + theme_light()
 pca + xlab(paste0("PC1 (", signif(p_eval$p_eval[1], 3), "%)")) + ylab(paste0("PC2 (", signif(p_eval$p_eval[2], 3), "%)"))
 
 ggsave(pca, device = NULL, path = out_path, filename = paste0("PCA_",batch,"-",individual,".pdf"))
+

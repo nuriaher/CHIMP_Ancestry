@@ -1,3 +1,5 @@
+# coding=utf-8
+
 #### 20.11.20
 import subprocess
 import argparse
@@ -55,8 +57,8 @@ if not (os.path.exists(new_IDs)):
 
                     if not (subline.startswith('Pt')):
                         if 'chimp' in subline:
-                            subline = re.sub('chimp','ZOOChimp_',subline)
-                        else:
+                            subline = re.sub('chimp_','ZOOChimp_',subline)
+                        if not ('ZOOChimp_' in subline) or ('ZooChimp_' in subline):
                             subline = 'ZOOChimp_'+subline
 
                     if n==1:

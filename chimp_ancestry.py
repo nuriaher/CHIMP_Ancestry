@@ -93,21 +93,24 @@ for i in range(len(batch_ID)):
             ## 1.3 - Retrieve individual files - keep pipeline
 
     # Get full paths of all individual .bed files
-    files_individuals=glob.glob(out_path_filtering+'/*.map')
+    files_individuals=glob.glob(output_12_base+'/*.pruned.map')
     for file in files_individuals:
 
         individual_ID=os.path.basename(file)
-        individual_ID=individual_ID.replace(batch_ID[i]+'-pruned','')
-        individual_ID=individual_ID.replace('.map','')
-
-        plink_base=file.replace('.map','')
+        individual_ID=individual_ID.replace('_plink.pruned.map','') # indv ID
+        
+        plink_base=file.replace('.map','') # full path
 
 
         #####################    #####################
         ### 2 - PCA - Over individual filtered data (Ref Panel.coloured , Unkown ancestry.grey)
         #####################    #####################
+        main_path_pca=out_path+'/CA_02-PCA'
+        out_path_pca = main_path_pca+'/'+batch_ID[i]
 
-        out_path_pca = out_path+'/CA_02-PCA/'+batch_ID[i]
+        if not os.path.exists(main_path_pca):
+            os.mkdir(main_path_pca)
+
         if not os.path.exists(out_path_pca):
             os.mkdir(out_path_pca)
 
@@ -122,8 +125,12 @@ for i in range(len(batch_ID)):
         #####################    #####################
         ### 3 - ADMIXTURE - Reference Panel x 1 Query Individual (avoid relatedness bias)
         #####################    #####################
+        main_path_admx=out_path+'/CA_03-Admixture'
+        out_path_admx = main_path_admx+'/'+batch_ID[i]
 
-        out_path_admx = out_path+'/CA_03-Admixture/'+batch_ID[i]
+        if not os.path.exists(main_path_admx):
+            os.mkdir(main_path_admx)
+
         if not os.path.exists(out_path_admx):
             os.mkdir(out_path_admx)
 
