@@ -98,7 +98,7 @@ for i in range(len(batch_ID)):
 
         individual_ID=os.path.basename(file)
         individual_ID=individual_ID.replace('_plink.pruned.map','') # indv ID
-        
+
         plink_base=file.replace('.map','') # full path
 
 
