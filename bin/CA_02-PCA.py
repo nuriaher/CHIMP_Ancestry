@@ -31,7 +31,7 @@ if not os.path.isfile(out_base+'.eigenval'):
     subprocess.Popen(bedCmd,shell=True).wait()
 
 
-    pcaCmd='plink1.9 --bfile '+out_base+' --pca 10 --out '+out_base+' && rm '+plink_base+'*.bed '+plink_base+'*.bim '+plink_base+'*.fam'
+    pcaCmd='plink1.9 --bfile '+out_base+' --pca 10 --out '+out_base+' && rm '+out_base+'*.bed '+out_base+'*.bim '+out_base+'*.fam'
     subprocess.Popen(pcaCmd,shell=True).wait()
 
 else:
