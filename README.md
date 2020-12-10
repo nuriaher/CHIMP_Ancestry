@@ -38,6 +38,7 @@ nohup python ${pipeline_path}/CHIMP_Ancestry/chimp_ancestry.py -input ${my_path}
 ```
 
 This command:
+* **It is meant to be run on the directory which contains the cloned GitHub repository "CHIMP_Ancestry".**
 * Will produce a .log file in the specified path where the process of the pipeline can be followed.  
 * Has some required arguments and some optional ones which can be added:
 
