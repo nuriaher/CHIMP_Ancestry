@@ -26,7 +26,7 @@ else:
 k = 4
 
 # Run admixture
-admixtureCmd='admixture '+plink_bed+' '+str(k)+' -j'+str(t)+''
+admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+''
 subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
