@@ -133,34 +133,34 @@ for i in range(len(batch_ID)):
             os.mkdir(out_path_admx)
 
         if args.t_admixture:
-            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+'/'+individual_ID+' -t '+args.t_admixture+''
+            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+' -t '+args.t_admixture+''
             subprocess.Popen(admixtureCmd,shell=True).wait()
 
         else:
-            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+'/'+individual_ID+''
+            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+''
             subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
 
-            #####################    #####################
-            ### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
-            #####################    #####################
-
-
-            # Define PLINK basename for file
-            out_path_evaladmix = out_path+'/CA_04-evalAdmix/'+batch_ID[i]
-            if not os.path.exists(out_path_evaladmix):
-                os.mkdir(out_path_evaladmix)
-
-            output_4 = out_path_evaladmix+'/'+batch_ID[i]+'-'+individual_ID+'.txt'
-
-            if args.t_evaladmix:
-                evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -output '+output_4+' -t '+t_evaladmix+''
-                subprocess.Popen(evaladmixCmd,shell=True).wait()
-
-            else:
-                evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -output '+output_4+''
-                subprocess.Popen(evaladmixCmd,shell=True).wait()
+            # #####################    #####################
+            # ### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
+            # #####################    #####################
+            #
+            #
+            # # Define PLINK basename for file
+            # out_path_evaladmix = out_path+'/CA_04-evalAdmix/'+batch_ID[i]
+            # if not os.path.exists(out_path_evaladmix):
+            #     os.mkdir(out_path_evaladmix)
+            #
+            # output_4 = out_path_evaladmix+'/'+batch_ID[i]+'-'+individual_ID+'.txt'
+            #
+            # if args.t_evaladmix:
+            #     evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -output '+output_4+' -t '+t_evaladmix+''
+            #     subprocess.Popen(evaladmixCmd,shell=True).wait()
+            #
+            # else:
+            #     evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -output '+output_4+''
+            #     subprocess.Popen(evaladmixCmd,shell=True).wait()
 
     #
     #
