@@ -7,7 +7,7 @@ import re
 
 #Argument parsing
 parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
-parser.add_argument('-plink_bed', help="filtering step PLINK output", dest="plink_ped", required=True)
+parser.add_argument('-plink_bed', help="filtering step PLINK output", dest="plink_bed", required=True)
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
 parser.add_argument('-t', help="threads", dest="threads")
 args = parser.parse_args()

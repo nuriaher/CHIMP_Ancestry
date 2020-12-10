@@ -1,0 +1,6 @@
+Pan_troglodytes-A996_Diana.variant15	Pan_troglodytes-A996_Diana.variant15
+Pan_troglodytes-B010_Ikuru.variant16	Pan_troglodytes-B010_Ikuru.variant16
+Pan_troglodytes-N018_Trixie.variant27	Pan_troglodytes-N018_Trixie.variant27
+chimp_11419.variant2	chimp_11419.variant2
+chimp_12009.variant3	chimp_12009.variant3
+chimp_12141.variant4	chimp_12141.variant4
