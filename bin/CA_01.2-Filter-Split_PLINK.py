@@ -90,5 +90,5 @@ with open(new_IDs,'r') as IDs:
             plink4Cmd='plink1.9 --file '+individual_plink_base+'_maf05_geno0 --indep-pairwise 50 5 0.5'
             subprocess.Popen(plink4Cmd,shell=True).wait()
 
-            plink5Cmd='plink1.9 --file '+individual_plink_base+'_maf05_geno0 --extract plink.prune.in --recode --out '+individual_plink_base+'_plink.pruned'
+            plink5Cmd='plink1.9 --file '+individual_plink_base+'_maf05_geno0 --extract plink.prune.in --make-bed --out '+individual_plink_base+'_plink.pruned'
             subprocess.Popen(plink5Cmd,shell=True).wait()

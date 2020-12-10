@@ -27,11 +27,7 @@ batch_ID=args.batch_ID
 out_base=out_path+'/'+ind_ID
 
 if not os.path.isfile(out_base+'.eigenval'):
-    bedCmd='plink1.9 --file '+plink_base+' --make-bed --out '+out_base+''
-    subprocess.Popen(bedCmd,shell=True).wait()
-
-
-    pcaCmd='plink1.9 --bfile '+out_base+' --pca 10 --out '+out_base+' && rm '+out_base+'*.bed '+out_base+'*.bim '+out_base+'*.fam'
+    pcaCmd='plink1.9 --bfile '+plink_base+' --pca 10 --out '+out_base+''
     subprocess.Popen(pcaCmd,shell=True).wait()
 
 else:

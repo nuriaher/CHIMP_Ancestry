@@ -93,13 +93,13 @@ for i in range(len(batch_ID)):
             ## 1.3 - Retrieve individual files - keep pipeline
 
     # Get full paths of all individual .bed files
-    files_individuals=glob.glob(output_12_base+'/*.pruned.map')
+    files_individuals=glob.glob(output_12_base+'/*.pruned.bed')
     for file in files_individuals:
 
         individual_ID=os.path.basename(file)
-        individual_ID=individual_ID.replace('_plink.pruned.map','') # indv ID
+        individual_ID=individual_ID.replace('_plink.pruned.bed','') # indv ID
 
-        plink_base=file.replace('.map','') # full path
+        plink_base=file.replace('.bed','') # full path
 
 
         #####################    #####################
@@ -135,11 +135,11 @@ for i in range(len(batch_ID)):
             os.mkdir(out_path_admx)
 
         if args.t_admixture:
-            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+' -t '+args.t_admixture+''
+            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+'/'+individual_ID+' -t '+args.t_admixture+''
             subprocess.Popen(admixtureCmd,shell=True).wait()
 
         else:
-            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_ped '+plink_base+'.ped -out_path '+out_path_admx+'/'+individual_ID+''
+            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+'/'+individual_ID+''
             subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
