@@ -86,6 +86,7 @@ with open(new_IDs,'r') as IDs:
             plink3Cmd='plink1.9 --file '+individual_plink_base+'_somatic_rmDon --maf 0.05 --geno 0 --recode --out '+individual_plink_base+'_maf05_geno0'
             subprocess.Popen(plink3Cmd,shell=True).wait()
 
+        if not (os.path.exists(str(individual_plink_base+'_plink.pruned.bed'))):
             # LD pruning
             plink4Cmd='plink1.9 --file '+individual_plink_base+'_maf05_geno0 --indep-pairwise 50 5 0.5'
             subprocess.Popen(plink4Cmd,shell=True).wait()
