@@ -41,13 +41,13 @@ This command:
 
 ```bash
 required arguments:
-  -input INPUT                batchID, vcf file path, Family and Within-family IDs file path
-  -out_path OUT_PATH          output path
+  -input    {input_file_path}     batchID, vcf file path, Family and Within-family IDs file path
+  -out_path {output_path}         output path
 optional arguments:
-  --pca_plot                  wants to get a .pdf PCA Plot
-  --t_admixture T_ADMIXTURE   admixture number of threads, default 10
-  --t_ngsrelate T_NGSRELATE   ngsrelate number of threads, default 4
-  --t_evaladmix T_NGSRELATE   ngsrelate number of threads, default 1
+  --pca_plot                            wants to get a .pdf PCA Plot
+  --t_admixture T_ADMIXTURE {new_num}   admixture number of threads, default 10
+  --t_ngsrelate T_NGSRELATE {new_num}   ngsrelate number of threads, default 4
+  --t_evaladmix T_NGSRELATE  {new_num}  ngsrelate number of threads, default 1
   
 ```  
 
