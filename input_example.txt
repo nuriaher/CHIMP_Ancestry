@@ -1,2 +1,3 @@
 #BatchID Vcf_path Family and Within-family IDs file path
 CHIMPS_ZOO1 home/users/me/Chimps_ZOO1.vcf home/users/me/Chimps_ZOO1_IDs.txt
+CHIMPS_ZOO2 home/users/me/Chimps_ZOO2.vcf home/users/me/Chimps_ZOO2_IDs.txt
