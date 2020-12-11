@@ -19,6 +19,7 @@ parser.add_argument('-input', help="batchID, vcf file path, Family and Within-fa
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
     # Optional arguments
 parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
+parser.add_argument('--admx_plot', help="wants to get a .pdf ADMIXTURE Plot", dest="admx_plot", action='store_true')
 parser.add_argument('--t_admixture', help="admixture number of threads, default 10", dest="t_admixture")
 parser.add_argument('--t_ngsrelate', help="ngsrelate number of threads, default 4", dest="t_ngsrelate")
 parser.add_argument('--t_evaladmix', help="ngsrelate number of threads, default 1", dest="t_ngsrelate")
@@ -132,13 +133,21 @@ for i in range(len(batch_ID)):
         if not os.path.exists(out_path_admx):
             os.mkdir(out_path_admx)
 
-        if args.t_admixture:
-            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+' -t '+args.t_admixture+''
-            subprocess.Popen(admixtureCmd,shell=True).wait()
 
-        else:
-            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -out_path '+out_path_admx+''
-            subprocess.Popen(admixtureCmd,shell=True).wait()
+        if args.t_admixture:
+            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' -t '+args.t_admixture+''
+
+            if args.admx_plot:
+                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' -t '+args.t_admixture+' --admx_plot'
+
+        if not args.t_admixture:
+            if args.admx_plot:
+                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' --admx_plot'
+
+            else:
+                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+''
+
+        subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
 

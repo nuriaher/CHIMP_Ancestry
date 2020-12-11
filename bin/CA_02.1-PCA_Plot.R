@@ -1,7 +1,7 @@
 library("argparse")
 library("ggplot2")
 library("dplyr")
-library(tidyverse)
+library("tidyverse")
 
 # Parse inputs
 parser <-  ArgumentParser(description='Runs Chimp Ancestry.')
