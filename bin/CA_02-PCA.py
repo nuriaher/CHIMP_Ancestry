@@ -26,7 +26,7 @@ batch_ID=args.batch_ID
     # Generate .eigenvalues .eigenvectors files
 out_base=out_path+'/'+ind_ID
 
-if not os.path.isfile(out_base+'.eigenval'):
+if not os.path.exists(out_base+'.eigenval'):
     pcaCmd='plink1.9 --bfile '+plink_base+' --pca 10 --out '+out_base+''
     subprocess.Popen(pcaCmd,shell=True).wait()
 
@@ -35,17 +35,19 @@ else:
 
 
 if args.pca_plot:
-    print('PCA')
-        # Generate PCA plot
-    out_evalues=''+out_base+'.eigenval'
-    out_evectors=''+out_base+'.eigenvec'
+    if not os.path.exists(out_path+'PCA_'+batch_ID+'-'+ind_ID+'.pdf'):
+            # Generate PCA plot
+        out_evalues=''+out_base+'.eigenval'
+        out_evectors=''+out_base+'.eigenvec'
 
-    # Get current directory
-    file = os.path.dirname(sys.argv[0])
-    curr_dir = os.path.abspath(file)
+        # Get current directory
+        file = os.path.dirname(sys.argv[0])
+        curr_dir = os.path.abspath(file)
 
-    pcaplotCmd='Rscript '+curr_dir+'/CA_02.1-PCA_Plot.R --eval '+out_evalues+' --evec '+out_evectors+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -out_path '+out_path+''
-    subprocess.Popen(pcaplotCmd,shell=True).wait()
+        pcaplotCmd='Rscript '+curr_dir+'/CA_02.1-PCA_Plot.R --eval '+out_evalues+' --evec '+out_evectors+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -out_path '+out_path+''
+        subprocess.Popen(pcaplotCmd,shell=True).wait()
+    else:
+        pass
 
 else:
     pass

@@ -1,6 +1,7 @@
 library("argparse")
 library("ggplot2")
-library("tidyverse")
+library("dplyr")
+library(tidyverse)
 
 # Parse inputs
 parser <-  ArgumentParser(description='Runs Chimp Ancestry.')
@@ -32,18 +33,31 @@ names(evec_pc)[2:ncol(evec_pc)] <- paste0("PC", 1:(ncol(evec_pc)-1))
 
   # Generate Subspecies column - plot's sake
 evec_pc$subspp <- ''
-evec_pc$subspp[grep("P_t_troglodytes", evec_pc$IDs)] <- "Pt_troglodytes"
-evec_pc$subspp[grep("P_t_ellioti", evec_pc$IDs)] <- "Pt_ellioti"
-evec_pc$subspp[grep("P_t_verus", evec_pc$IDs)] <- "Pt_verus"
-evec_pc$subspp[grep("P_t_schweinfurthii", evec_pc$IDs)] <- "Pt_schweinfurthii"
+evec_pc$subspp[grep("ZOOChimp", evec_pc$IDs)] <- "ZOOChimp"
+evec_pc$subspp[grep("Pt_troglodytes", evec_pc$IDs)] <- "Pt_troglodytes"
+evec_pc$subspp[grep("Pt_ellioti", evec_pc$IDs)] <- "Pt_ellioti"
+evec_pc$subspp[grep("Pt_verus", evec_pc$IDs)] <- "Pt_verus"
+evec_pc$subspp[grep("Pt_schweinfurthii", evec_pc$IDs)] <- "Pt_schweinfurthii"
+
 
   # Convert eigen values to percentage of explained variance
-p_eval <- data.frame(PC = 1:10, p_eval = eval_pc/sum(eval_pc)*100) ######################################## CHECK IF ACTUALLY ONLY 10 PC (should be, --pca 10)
-
+p_eval <- data.frame(PC = 1:10, p_eval = eval_pc/sum(eval_pc)*100)
 
 # Plot PCA and save as pdf
-pca <- ggplot(evec_pc, aes(PC1, PC2, col = as.factor(subspp))) + geom_point(size = 3)
-pca <- pca + scale_colour_manual(values = c("blue", "green", "purple", "orange", "grey"))
+title <- paste0(individual," vs Reference Panel")
+
+
+Subspecies_in_sample=as.factor(evec_pc$subspp)
+
+pca <- ggplot(evec_pc, aes(PC1, PC2, col = Subspecies_in_sample)) + geom_point(alpha = 0.5, size = 4)
+ggtitle(title)
+
+
+if (length(levels(as.factor(evec_pc$subspp))) == 5){
+  pca <- pca + scale_colour_manual(values = c("blue", "orange", "yellow", "purple","green"))}
+if (length(levels(as.factor(evec_pc$subspp))) == 6){
+  pca <- pca + scale_colour_manual(values = c("blue", "orange", "yellow", "purple" , "red", "green"))}
+
 pca <- pca + coord_equal() + theme_light()
 pca + xlab(paste0("PC1 (", signif(p_eval$p_eval[1], 3), "%)")) + ylab(paste0("PC2 (", signif(p_eval$p_eval[2], 3), "%)"))
 

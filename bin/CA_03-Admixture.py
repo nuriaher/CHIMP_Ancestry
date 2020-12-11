@@ -26,13 +26,7 @@ else:
 k = 4
 
 # Run admixture
-admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+''
-subprocess.Popen(admixtureCmd,shell=True).wait()
-
-
-######## MOVE OUTPUTS TO ADMIXTURE PATH ########## how are output files called?
-#admix_output_base= '*'
-
-
-#mvCmd='mv '+OUTPUTS+' '+out_path+''
-#subprocess.Popen(mvCmd,shell=True).wait()
+plink_base=plink_bed.replace('.bed','')
+if not os.path.isfile(plink_base+'.'+str(k)+'.Q'):
+    admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+''
+    subprocess.Popen(admixtureCmd,shell=True).wait()
