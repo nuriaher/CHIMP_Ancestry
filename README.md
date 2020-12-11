@@ -48,9 +48,10 @@ required arguments:
   -out_path {output_path}         output path
 optional arguments:
   --pca_plot                            wants to get a .pdf PCA Plot
+  --admx_plot                           wants to get a .pdf ADMIXTURE results Plot
   --t_admixture T_ADMIXTURE {new_num}   admixture number of threads, default 10
   --t_ngsrelate T_NGSRELATE {new_num}   ngsrelate number of threads, default 4
-  --t_evaladmix T_NGSRELATE  {new_num}  ngsrelate number of threads, default 1
+  --t_evaladmx T_NGSRELATE  {new_num}  ngsrelate number of threads, default 1
   
 ```  
 
