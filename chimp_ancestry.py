@@ -21,7 +21,7 @@ parser.add_argument('-out_path', help="output path", dest="out_path", required=T
 parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
 parser.add_argument('--admx_plot', help="wants to get a .pdf ADMIXTURE Plot", dest="admx_plot", action='store_true')
 parser.add_argument('--t_admixture', help="admixture number of threads, default 10", dest="t_admixture")
-parser.add_argument('--t_evaladmx', help="ngsrelate number of threads, default 1", dest="t_evaladmx")
+parser.add_argument('--t_evaladmix', help="ngsrelate number of threads, default 1", dest="t_evaladmix")
 parser.add_argument('--t_ngsrelate', help="ngsrelate number of threads, default 4", dest="t_ngsrelate")
 args = parser.parse_args()
 
@@ -166,14 +166,14 @@ for i in range(len(batch_ID)):
                 os.mkdir(out_path_evaladmx)
 
             output_4 = out_path_evaladmx+'/EvalAdmix_'+batch_ID[i]+'-'+individual_ID+'.txt'
-            amdx_base= out_path_admx+'/'+individual_ID+'_plink.pruned'
+            admx_base= out_path_admx+'/'+individual_ID+'_plink.pruned'
 
 
-            if args.t_evaladmx:
-                evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -admx_base '+admx_base+' -output '+output_4+' -t '+args.t_evaladmx+''
+            if args.t_evaladmix:
+                evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -admx_base '+admx_base+' -output '+output_4+' -t '+args.t_evaladmix+''
                 subprocess.Popen(evaladmixCmd,shell=True).wait()
 
-            if not args.t_evaladmx:
+            if not args.t_evaladmix:
                 evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -admx_base '+admx_base+' -output '+output_4+''
                 subprocess.Popen(evaladmixCmd,shell=True).wait()
 
