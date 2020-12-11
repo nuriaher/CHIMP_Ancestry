@@ -35,7 +35,7 @@ else:
 
 
 if args.pca_plot:
-    if not os.path.exists(out_path+'PCA_'+batch_ID+'-'+ind_ID+'.pdf'):
+    if not os.path.exists(out_path+'/PCA_'+batch_ID+'-'+ind_ID+'.pdf'):
             # Generate PCA plot
         out_evalues=''+out_base+'.eigenval'
         out_evectors=''+out_base+'.eigenvec'

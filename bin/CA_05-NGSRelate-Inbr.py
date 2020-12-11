@@ -37,7 +37,7 @@ out_path=args.out_path
 output=out_path+"-"+individual_ID+'.res' ## .res Probably not necessary
 
 if args.threads:
-    ngsCmd='ngsRelate  -h '+my_reformatted.VCF.gz+' -O '+output+' -p '+args.threads+''
+    ngsCmd='ngsRelate  -h '+my_reformatted.VCF.gz+' -O '+output+' -p '+str(args.threads)+''
     subprocess.Popen(ngsCmd,shell=True).wait()
 
 else: # default threads 4
