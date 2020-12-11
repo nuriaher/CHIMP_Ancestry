@@ -20,6 +20,7 @@ parser.add_argument('-out_path', help="output path", dest="out_path", required=T
     # Optional arguments
 parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
 parser.add_argument('--admx_plot', help="wants to get a .pdf ADMIXTURE Plot", dest="admx_plot", action='store_true')
+parser.add_argument('--evalAdmix_plot', help="wants to get a .pdf evalADMIX Plot", dest="evalAdmix_plot", action='store_true')
 parser.add_argument('--t_admixture', help="admixture number of threads, default 10", dest="t_admixture")
 parser.add_argument('--t_evaladmix', help="ngsrelate number of threads, default 1", dest="t_evaladmix")
 parser.add_argument('--t_ngsrelate', help="ngsrelate number of threads, default 4", dest="t_ngsrelate")
