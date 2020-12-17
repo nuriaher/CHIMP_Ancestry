@@ -52,7 +52,7 @@ optional arguments:
   --evalAdmix_plot                      wants to get a .pdf evalADMIX correlations Plot
   --t_admixture T_ADMIXTURE {new_num}   admixture number of threads, default 10
   --t_ngsrelate T_NGSRELATE {new_num}   ngsrelate number of threads, default 4
-  --t_evaladmx T_NGSRELATE  {new_num}  evaladmix number of threads, default 1
+  --t_evaladmx T_NGSRELATE  {new_num}   evaladmix number of threads, default 1
   
 ```  
 
