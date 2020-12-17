@@ -118,7 +118,8 @@ for i in range(len(batch_ID)):
         if args.pca_plot:
             pcaCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' --pca_plot'
             subprocess.Popen(pcaCmd,shell=True).wait()
-        if not args.pca_plot:
+
+        else:
             pcaCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_02-PCA.py -plink_base '+plink_base+' -out_path '+out_path_pca+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+''
             subprocess.Popen(pcaCmd,shell=True).wait()
 
@@ -137,16 +138,20 @@ for i in range(len(batch_ID)):
 
 
         if args.t_admixture:
-            admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' -t '+args.t_admixture+''
-            subprocess.Popen(admixtureCmd,shell=True).wait()
-
             if args.admx_plot:
                 admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' -t '+args.t_admixture+' --admx_plot'
                 subprocess.Popen(admixtureCmd,shell=True).wait()
+
+            else:
+                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' -t '+args.t_admixture+''
+                subprocess.Popen(admixtureCmd,shell=True).wait()
+
+
         if not args.t_admixture:
             if args.admx_plot:
                 admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' --admx_plot'
                 subprocess.Popen(admixtureCmd,shell=True).wait()
+
             else:
                 admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+''
                 subprocess.Popen(admixtureCmd,shell=True).wait()
@@ -171,12 +176,26 @@ for i in range(len(batch_ID)):
 
 
             if args.t_evaladmix:
-                evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plin_base+' -admx_base '+admx_base+' -output '+output_4+' -t '+args.t_evaladmix+''
-                subprocess.Popen(evaladmixCmd,shell=True).wait()
+                if args.evalAdmix_plot:
+                    evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_evaladmx+' -t '+args.t_evaladmix+' --evalAdmix_plot'
+                    subprocess.Popen(evaladmixCmd,shell=True).wait()
+
+                else:
+                    evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_evaladmx+' -t '+args.t_evaladmix+''
+                    subprocess.Popen(evaladmixCmd,shell=True).wait()
+
+
 
             if not args.t_evaladmix:
-                evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -admx_base '+admx_base+' -output '+output_4+''
-                subprocess.Popen(evaladmixCmd,shell=True).wait()
+                if args.evalAdmix_plot:
+                    evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_evaladmx+' --evalAdmix_plot'
+                    subprocess.Popen(evaladmixCmd,shell=True).wait()
+
+                else:
+                    evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -admx_base '+admx_base+'  -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_evaladmx+''
+                    subprocess.Popen(evaladmixCmd,shell=True).wait()
+
+
 
 
     #
