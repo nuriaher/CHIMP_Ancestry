@@ -1,7 +1,7 @@
 plotCorRes <- function(cor_mat, pop=NULL, ord=NULL, superpop=NULL,
                        title="Correlation of residuals", min_z=NA,max_z=NA,
-                       cex.main=1.5, cex.lab=1.5, cex.legend=1.5, color_palette=c("#001260", "#EAEDE9", "#601200"),
-                       pop_labels = c(T,T), plot_legend = T, adjlab = 0.125, rotatelabpop=90, rotatelabsuperpop=0,lineswidth=1, lineswidthsuperpop=2,
+                       cex.main=1.5, cex.lab=1.4, cex.legend=1.5, color_palette=c("#001260", "#EAEDE9", "#601200"),
+                       pop_labels = c(T,T), plot_legend = T, adjlab = 0.17, rotatelabpop=90, rotatelabsuperpop=0,lineswidth=1, lineswidthsuperpop=2,
                        adjlabsuperpop=0.16,cex.lab.2 = 1.5){
 
   op <- par(mfrow=c(1,1) ,mar=c(7,4,4,2) +0.1,xpd=T)
@@ -14,8 +14,8 @@ plotCorRes <- function(cor_mat, pop=NULL, ord=NULL, superpop=NULL,
   if(is.null(ord)&is.null(pop)) ord <- 1:nrow(cor_mat)
 
   if(is.null(pop)){
-      pop <- rep(" ", nrow(cor_mat))
-      lineswidth <- 0
+    pop <- rep(" ", nrow(cor_mat))
+    lineswidth <- 0
   }
 
   pop<-pop[ord]
@@ -49,16 +49,16 @@ plotCorRes <- function(cor_mat, pop=NULL, ord=NULL, superpop=NULL,
 
   z_lims <- c(min_z, max_z)
 
-    if(all(is.na(z_lims))) z_lims <- c(-max(abs(cor_mat[!is.na(cor_mat)])),
-                                         max(abs(cor_mat[!is.na(cor_mat)])))
+  if(all(is.na(z_lims))) z_lims <- c(-max(abs(cor_mat[!is.na(cor_mat)])),
+                                     max(abs(cor_mat[!is.na(cor_mat)])))
   #if(all(is.null(z_lims))) max_z <- max(abs(cor_mat[!is.na(cor_mat)]))
 
 
   if(any(is.na(z_lims))) z_lims <- c(-z_lims[!is.na(z_lims)], z_lims[!is.na(z_lims)])
   #if(any(is.null(z_lims))) max_z <- z_lims[!is.null(z_lims)]
 
-    min_z <- z_lims[1]
-    max_z <- z_lims[2]
+  min_z <- z_lims[1]
+  max_z <- z_lims[2]
 
   diag(cor_mat) <- 10
   nHalf <- 10
@@ -105,8 +105,8 @@ plotCorRes <- function(cor_mat, pop=NULL, ord=NULL, superpop=NULL,
          col=1,lwd=lineswidth,xpd=F)
 
   # put superpop if not null
-    if(!is.null(superpop)){
-        superpop <- superpop[ord]
+  if(!is.null(superpop)){
+    superpop <- superpop[ord]
     if(pop_labels[2])
       text(sort(tapply(1:length(superpop),superpop,mean)/length(superpop)),-adjlabsuperpop,unique(superpop),xpd=NA,cex=cex.lab.2, srt=rotatelabsuperpop, font=2)
     if(pop_labels[1])
@@ -181,13 +181,13 @@ orderK <- function(q, refinds= NULL,refpops = NULL, pop=NULL){
   kord <- integer(0)
 
   if(is.null(refinds)){
-  refpops <- refpops[1:k]
+    refpops <- refpops[1:k]
 
-  for(p in refpops){
+    for(p in refpops){
 
-    kord <- c(kord, which.max(apply(q[pop==p,],2,mean)))
+      kord <- c(kord, which.max(apply(q[pop==p,],2,mean)))
 
-  }
+    }
   } else {
 
     refinds <- refinds[1:k]
@@ -198,9 +198,9 @@ orderK <- function(q, refinds= NULL,refpops = NULL, pop=NULL){
     }
   }
 
-    # if(any(rowSums(q[,kord]!=1))) warning("reordered admixture proportions don't sum to 1, make sure every refind or refpop defines a unique cluster.")
+  # if(any(rowSums(q[,kord]!=1))) warning("reordered admixture proportions don't sum to 1, make sure every refind or refpop defines a unique cluster.")
 
-    return(kord)
+  return(kord)
 }
 
 

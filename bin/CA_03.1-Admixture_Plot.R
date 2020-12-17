@@ -40,3 +40,6 @@ barplot(t(as.matrix(tbl)),
         las=2, cex.names = 0.4, main=paste0(fam$V1[1],' vs Reference Panel'), cex.main=1 )
 legend("right", Subspecies_in_sample, fill = brewer.pal(6,"Set1"), bty = "n", xpd=TRUE, inset = -0.25, cex=.8)
 dev.off()
+
+
+lineswidth=1
