@@ -1,6 +1,4 @@
 library("argparse")
-source("evalAdmix_visFuns.R")
-
 
 
 # Parse inputs
@@ -11,6 +9,7 @@ parser$add_argument('-matrix_out', dest='matrix_out', help='evalAdmix output mat
 parser$add_argument('-ind_ID', dest='individual', help='individual ID', required=TRUE)
 parser$add_argument('-batch_ID', dest='batch', help='sample batch', required=TRUE)
 parser$add_argument('-out_path', dest='out_path', help='directory to redirect output', required=TRUE)
+parser$add_argument('-script_path', dest='script_path', help='visfuns directory', required=TRUE)
 args <- parser$parse_args()
 
 # Define variables
@@ -20,10 +19,11 @@ matrix_out <- args$matrix_out
 individual <- args$individual
 batch <- args$batch
 out_path <- args$out_path
+script_path <- args$script_path
 
+source(paste0(script_path,"/evalAdmix_visFuns.R"))
 
-
-pop <- as.vector(read.table(fam_file)$V1) # N length character vector with each individual population assignment
+pop <- as.vector(read.table(fam_file)) # N length character vector with each individual population assignment
 q <- as.matrix(read.table(Q_admx)) # admixture porpotions q is optional for visualization but if used for ordering plot might look better
 r <- as.matrix(read.table(matrix_out))
 

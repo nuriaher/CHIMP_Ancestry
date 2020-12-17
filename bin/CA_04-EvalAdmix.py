@@ -51,8 +51,9 @@ if args.evalAdmix_plot:
     curr_dir = os.path.abspath(file)
 
 
-    admxplotCmd='Rscript '+curr_dir+'/CA_03.1-Admixture_Plot.R --Q_admx '+Q_file+' --fam_file '+fam_file+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -out_path '+out_path+''
-    subprocess.Popen(admxplotCmd,shell=True).wait()
+    evaladmxplotCmd='Rscript '+curr_dir+'/CA_04.1-EvalAdmix_Plot.R -Q_admx '+Q_file+' -fam_file '+fam_file+' -matrix_out '+output+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -script_path '+curr_dir+' -out_path '+out_path+''
+    print(evaladmxplotCmd)
+    subprocess.Popen(evaladmxplotCmd,shell=True).wait()
 
 else:
     pass
