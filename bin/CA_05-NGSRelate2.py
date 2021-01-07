@@ -18,7 +18,7 @@ parser.add_argument('-ngsrelate_base', help="ngsrelate_base path", dest="ngsrela
 args = parser.parse_args()
 
 plink_base=args.plink_base
-ancestral_pp=args.ancestral_pp
+admx_base=args.admx_base
 ind_ID=args.ind_ID
 ngsrelate_base=args.ngsrelate_base
 
@@ -30,11 +30,12 @@ if not os.path.isfile(output):
     ##### 1 - Reformat ind_ID file - keep only Individual + RP in ancestral_pp
 
     # Define required inputs
+    k = str(4)
     Q_path = admx_base+'.'+k+'.Q'
     fam_path = plink_base+'.fam'
 
     # Q file step
-    ancestry_index = str()      # Index of the ancestral population column the query individual belongs to
+    ancestry_index = int()      # Index of the ancestral population column the query individual belongs to
     pop_indexes = list()        # List where to append positions in Q file of all individuals in ancestral pop
     with open(Q_path,'r') as Q_file:
         # Identify ancestral population from first individual
@@ -42,7 +43,7 @@ if not os.path.isfile(output):
         query_indv_data = query_individual.split(' ')
         for pop in query_indv_data:
             if str(pop).startswith('0.99'): # If ancestral pop continue, if hybrid pass
-                ancestry_index = (query_indv_data.index(pop))
+                ancestry_index = int(query_indv_data.index(pop))
             else:
                 pass
 
@@ -61,13 +62,12 @@ if not os.path.isfile(output):
 
     # fam file step
     indv_ancestry_reformatted = ngsrelate_base+'-'+ind_ID # Define ancestry files base
-    ID_ancestral_pop = indv_ancestry_reformatted+'.txt'
+    ID_ancestral_pop = indv_ancestry_reformatted+'_IDs.txt'
 
-    with open(fam_path,'r') as fam_file, open(ID_ancestral_pop+'.txt','w+') as ancestry_IDs:
+    with open(fam_path,'r') as fam_file, open(ID_ancestral_pop,'w+') as ancestry_IDs:
         fam_data = fam_file.readlines()
         for index in pop_indexes:
             fam_line = fam_data[index].split(' ')
-            print(fam_line)
             ancestry_IDs.write(fam_line[0]+' '+fam_line[1]+'\n') # Generate new file with same-ancestry indvs' IDs
 
 
@@ -76,7 +76,7 @@ if not os.path.isfile(output):
     ##### 2 - PLINK step, Generate .VCF files : (ZOOChimp + Same ancestry RefPanel)
 
     # from Plink .bed files in CA_01-Filtering/Batch/Batch_indv/Individual.bed + keep IDs new file
-    vcfCmd='plink1.9 --file '+plink_base+' --keep '+ID_ancestral_pop+' --recode vcf --out '+indv_ancestry_reformatted+''
+    vcfCmd='plink1.9 --bfile '+plink_base+' --keep '+ID_ancestral_pop+' --recode vcf --out '+indv_ancestry_reformatted+''
     subprocess.Popen(vcfCmd,shell=True).wait()
 
 
@@ -84,10 +84,11 @@ if not os.path.isfile(output):
     ##### 3 -  Run NgsRelate, only on newly generated VCF files
     ancestry_vcf = indv_ancestry_reformatted+'.VCF.gz'
 
-    if args.threads:
-        ngsCmd='ngsRelate  -h '+ancestry_vcf+' -O '+output+' -p '+str(args.threads)+''
-        subprocess.Popen(ngsCmd,shell=True).wait()
+    if os.path.isfile(ancestry_vcf):
+        if args.threads:
+            ngsCmd='ngsRelate  -h '+ancestry_vcf+' -O '+output+' -p '+str(args.threads)+''
+            subprocess.Popen(ngsCmd,shell=True).wait()
 
-    else: # default threads 4
-        ngsCmd='ngsRelate  -h '+ancestry_vcf+' -O '+output+''
-        subprocess.Popen(ngsCmd,shell=True).wait()
+        else:   # default threads 4
+            ngsCmd='ngsRelate  -h '+ancestry_vcf+' -O '+output+''
+            subprocess.Popen(ngsCmd,shell=True).wait()

@@ -212,7 +212,7 @@ for i in range(len(batch_ID)):
         #####################    #####################
 
         # Define output dirs
-        main_path_ngsrelate = out_path+'/CA_05-NGSRelate2
+        main_path_ngsrelate = out_path+'/CA_05-NGSRelate2'
         out_path_ngsrelate = main_path_ngsrelate+'/'+batch_ID[i]
 
         if not os.path.exists(main_path_ngsrelate):
@@ -221,16 +221,16 @@ for i in range(len(batch_ID)):
         if not os.path.exists(out_path_ngsrelate):
             os.mkdir(out_path_ngsrelate)
 
-        # Define basename for future outputs 
+        # Define basename for future outputs
         output_5_base = out_path_ngsrelate+'/'+batch_ID[i]
 
 
         if args.t_ngsrelate:
-            ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -ngsrelate_base '+output_5_base+' -t '+args.t_ngsrelate+''
+            ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate2.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -ngsrelate_base '+output_5_base+' -t '+args.t_ngsrelate+''
             subprocess.Popen(ngsrelateCmd,shell=True).wait()
 
         else:
-            ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -ngsrelate_base '+output_5_base+''
+            ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate2.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -ngsrelate_base '+output_5_base+''
             subprocess.Popen(ngsrelateCmd,shell=True).wait()
 
 
