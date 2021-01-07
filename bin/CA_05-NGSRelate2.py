@@ -76,19 +76,20 @@ if not os.path.isfile(output):
     ##### 2 - PLINK step, Generate .VCF files : (ZOOChimp + Same ancestry RefPanel)
 
     # from Plink .bed files in CA_01-Filtering/Batch/Batch_indv/Individual.bed + keep IDs new file
-    vcfCmd='plink1.9 --bfile '+plink_base+' --keep '+ID_ancestral_pop+' --recode vcf --out '+indv_ancestry_reformatted+''
+    vcfCmd='plink1.9 --bfile '+plink_base+' --keep '+ID_ancestral_pop+' --make-bed --out '+indv_ancestry_reformatted+''
     subprocess.Popen(vcfCmd,shell=True).wait()
 
 
 
     ##### 3 -  Run NgsRelate, only on newly generated VCF files
-    ancestry_vcf = indv_ancestry_reformatted+'.VCF.gz'
 
-    if os.path.isfile(ancestry_vcf):
+    if os.path.isfile(indv_ancestry_reformatted+'.bed'):
         if args.threads:
-            ngsCmd='ngsRelate  -h '+ancestry_vcf+' -O '+output+' -p '+str(args.threads)+''
+            ngsCmd='ngsRelate  -P '+indv_ancestry_reformatted+' -O '+output+' -c 1 -p '+str(args.threads)+''
             subprocess.Popen(ngsCmd,shell=True).wait()
 
         else:   # default threads 4
-            ngsCmd='ngsRelate  -h '+ancestry_vcf+' -O '+output+''
+            ngsCmd='ngsRelate  -P '+indv_ancestry_reformatted+' -c 1 -O '+output+''
             subprocess.Popen(ngsCmd,shell=True).wait()
+
+# If called genotypes are being used, the software requires an additional argument (-c 1).
