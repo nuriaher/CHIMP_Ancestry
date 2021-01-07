@@ -1,5 +1,5 @@
 
- #-bed_base '+bed_base+' -ancestral_pp '+ancestry+' -individual_ID '+individual_ID+' -out_path'
+ #-bed_base '+bed_base+' -ancestral_pp '+ancestry+' -ind_ID '+ind_ID+' -out_path'
 
 #### 27.11.20
 import subprocess
@@ -23,11 +23,11 @@ ind_ID=args.ind_ID
 ngsrelate_base=args.ngsrelate_base
 
 
-output = ngsrelate_base+"-"+individual_ID+'.res' ## batchID/batchID-individualID.res - .res Probably not necessary
+output = ngsrelate_base+"-"+ind_ID+'.res' ## batchID/batchID-individualID.res - .res Probably not necessary
 
 if not os.path.isfile(output):
 
-    ##### 1 - Reformat individual_ID file - keep only Individual + RP in ancestral_pp
+    ##### 1 - Reformat ind_ID file - keep only Individual + RP in ancestral_pp
 
     # Define required inputs
     Q_path = admx_base+'.'+k+'.Q'
@@ -60,7 +60,7 @@ if not os.path.isfile(output):
 
 
     # fam file step
-    indv_ancestry_reformatted = ngsrelate_base+'-'+individual_ID # Define ancestry files base
+    indv_ancestry_reformatted = ngsrelate_base+'-'+ind_ID # Define ancestry files base
     ID_ancestral_pop = indv_ancestry_reformatted+'.txt'
 
     with open(fam_path,'r') as fam_file, open(ID_ancestral_pop+'.txt','w+') as ancestry_IDs:
