@@ -33,7 +33,7 @@ Once the pre-requisites are fullfiled, run this command on the *Artemis* termina
 ```bash
 ${pipeline_path}="my/user/directory/path/pipeline"
 ${my_path}="my/user/directory/path/bla"
-nohup python ${pipeline_path}/CHIMP_Ancestry/chimp_ancestry.py -input ${my_path}/input_SAMPLE.txt -out_path ${my_path} > ${my_path}/SAMPLE.log &
+nohup python ${pipeline_path}/CHIMP_Ancestry/chimp_ancestry.py -input ${my_path}/input_SAMPLEBATCH.txt -out_path ${my_path} > ${my_path}/SAMPLEBATCH.log &
 
 ```
 
