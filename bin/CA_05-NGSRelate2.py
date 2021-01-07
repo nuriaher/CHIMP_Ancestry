@@ -83,7 +83,7 @@ if not os.path.isfile(output):
 
     ##### 3 -  Run NgsRelate, only on newly generated VCF files
 
-    if os.path.isfile(indv_ancestry_reformatted+'.bed'):
+    if os.path.isfile(indv_ancestry_reformatted+'.bed') and (not os.path.isfile(output)):
         if args.threads:
             ngsCmd='ngsRelate  -P '+indv_ancestry_reformatted+' -O '+output+' -c 1 -p '+str(args.threads)+''
             subprocess.Popen(ngsCmd,shell=True).wait()
