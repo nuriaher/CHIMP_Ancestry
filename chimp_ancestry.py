@@ -157,24 +157,26 @@ for i in range(len(batch_ID)):
                 subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
-            #####################    #####################
-            ### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
-            #####################    #####################
 
-            # Define PLINK basename for file
-            main_path_evaladmx = out_path+'/CA_04-evalAdmix'
-            out_path_evaladmx = main_path_evaladmx+'/'+batch_ID[i]
+        #####################    #####################
+        ### 4 - evalADMIX - Evaluate ADMIXTURE Output for Reference Panel x 1 Query Individual
+        #####################    #####################
 
-            if not os.path.exists(main_path_evaladmx):
-                os.mkdir(main_path_evaladmx)
+        # Define PLINK basename for file
+        main_path_evaladmx = out_path+'/CA_04-evalAdmix'
+        out_path_evaladmx = main_path_evaladmx+'/'+batch_ID[i]
 
-            if not os.path.exists(out_path_evaladmx):
-                os.mkdir(out_path_evaladmx)
+        if not os.path.exists(main_path_evaladmx):
+            os.mkdir(main_path_evaladmx)
 
-            output_4 = out_path_evaladmx+'/EvalAdmix_'+batch_ID[i]+'-'+individual_ID+'.txt'
-            admx_base= out_path_admx+'/'+individual_ID+'_plink.pruned'
+        if not os.path.exists(out_path_evaladmx):
+            os.mkdir(out_path_evaladmx)
+
+        output_4 = out_path_evaladmx+'/EvalAdmix_'+batch_ID[i]+'-'+individual_ID+'.txt'
+        admx_base= out_path_admx+'/'+individual_ID+'_plink.pruned'
 
 
+        if os.path.exists(main_path_admx):
             if args.t_evaladmix:
                 if args.evalAdmix_plot:
                     evaladmixCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_04-EvalAdmix.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_evaladmx+' -t '+args.t_evaladmix+' --evalAdmix_plot'
@@ -198,37 +200,39 @@ for i in range(len(batch_ID)):
 
 
 
-    #
-    #
-    #
-    #     #####################    #####################    #####################    #####################
-    #     #####################   Consider individuals > 99% admix coefficients      #####################
-    #     #####################    #####################    #####################    #####################
-    #
-    # -- See how to if statement ONLY continue if non-hybrid
-    # -- One argument for CA_05-NgsRelate-Inbr.py is ANCESTRAL POPULATION :
-    #         . Infer from ADMIXTURE results the ancestral population
-    #         . CA_05-NgsRelate-Inbr.py can keep only these individuals of REF PANEL
-    #
-    #         if ancestry_coefficient BLABLABLA:
-    #
-    #         #####################    #####################
-    #         ### 5 - NGSRelate2 - Relatedness: 1 Query Individual x ADMIXTURE estimated ancestral population,
-    #         ###                - NGSRelate2 - Inbreeding : 1 Query Individual
-    #         #####################    #####################
-    #
-    #             out_path_ngsrelate = out_path+'/CA_05-NGSRelate2/'+batch_ID[i]+'/'+batch_ID[i]
-    #             if not os.path.exists(out_path_ngsrelate):
-    #                 os.mkdir(out_path_ngsrelate)
-    #
-    #             if args.t_ngsrelate:
-    #                 ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+' -t '+args.t_ngsrelate+''
-    #                 subprocess.Popen(ngsrelateCmd,shell=True).wait()
-    #
-    #             else:
-    #                 ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -in_bed '+in_bed+' -ancestral_pp '+ancestry+' -ind_ID '+individual_ID+' -out_path '+out_path_ngsrelate+''
-    #                 subprocess.Popen(ngsrelateCmd,shell=True).wait()
-    #
+
+
+        #####################    #####################    #####################    #####################
+        #####################   Consider individuals > 99% admix coefficients      #####################
+        #####################    #####################    #####################    #####################
+
+
+        #####################    #####################
+        ### 5 - NGSRelate2 - 1 Query Individual x ADMIXTURE estimated ancestral population
+        #####################    #####################
+
+        # Define output dirs
+        main_path_ngsrelate = out_path+'/CA_05-NGSRelate2
+        out_path_ngsrelate = main_path_ngsrelate+'/'+batch_ID[i]
+
+        if not os.path.exists(main_path_ngsrelate):
+            os.mkdir(main_path_ngsrelate)
+
+        if not os.path.exists(out_path_ngsrelate):
+            os.mkdir(out_path_ngsrelate)
+
+        # Define basename for future outputs 
+        output_5_base = out_path_ngsrelate+'/'+batch_ID[i]
+
+
+        if args.t_ngsrelate:
+            ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -ngsrelate_base '+output_5_base+' -t '+args.t_ngsrelate+''
+            subprocess.Popen(ngsrelateCmd,shell=True).wait()
+
+        else:
+            ngsrelateCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_05-NGSRelate-Inbr.py -plink_base '+plink_base+' -admx_base '+admx_base+' -ind_ID '+individual_ID+' -ngsrelate_base '+output_5_base+''
+            subprocess.Popen(ngsrelateCmd,shell=True).wait()
+
 
 
     #         #####################    #####################
