@@ -41,19 +41,18 @@ if not os.path.exists(output):
 else:
     pass
 
-# Plot
-if args.evalAdmix_plot:
-    fam_file = plink_base+'.fam'
-    Q_file = admx_base+'.'+k+'.Q'
+    # Plot
+    if args.evalAdmix_plot:
+        fam_file = plink_base+'.fam'
+        Q_file = admx_base+'.'+k+'.Q'
 
-    # Get current directory
-    file = os.path.dirname(sys.argv[0])
-    curr_dir = os.path.abspath(file)
+        # Get current directory
+        file = os.path.dirname(sys.argv[0])
+        curr_dir = os.path.abspath(file)
 
 
-    evaladmxplotCmd='Rscript '+curr_dir+'/CA_04.1-EvalAdmix_Plot.R -Q_admx '+Q_file+' -fam_file '+fam_file+' -matrix_out '+output+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -script_path '+curr_dir+' -out_path '+out_path+''
-    print(evaladmxplotCmd)
-    subprocess.Popen(evaladmxplotCmd,shell=True).wait()
+        evaladmxplotCmd='Rscript '+curr_dir+'/CA_04.1-EvalAdmix_Plot.R -Q_admx '+Q_file+' -fam_file '+fam_file+' -matrix_out '+output+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -script_path '+curr_dir+' -out_path '+out_path+''
+        subprocess.Popen(evaladmxplotCmd,shell=True).wait()
 
-else:
-    pass
+    else:
+        pass
