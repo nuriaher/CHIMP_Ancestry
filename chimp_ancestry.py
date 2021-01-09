@@ -1,7 +1,8 @@
 # coding=utf-8
 
 #Núria Hermosilla-Albala
-#20.11.20
+#2020-2021
+# University of Copenhagen
 
 import argparse
 import subprocess
@@ -200,8 +201,6 @@ for i in range(len(batch_ID)):
 
 
 
-
-
         #####################    #####################    #####################    #####################
         #####################   Consider individuals > 99% admix coefficients      #####################
         #####################    #####################    #####################    #####################
@@ -235,14 +234,6 @@ for i in range(len(batch_ID)):
 
 
 
-    #         #####################    #####################
-    #         ### 6 - Summary
-    #         #####################    #####################
-    #
-    #
-    #
-    #         ######
-    #         ### *** 7 *** - Estimate genomic diversity 1 Query Individual
-    #         ###
-    #         ## ngsPopGen - ngsStat
-    #         # https://github.com/mfumagalli/ngsPopGen
+        #####################    #####################
+        ### 6 - Summary
+        #####################    #####################

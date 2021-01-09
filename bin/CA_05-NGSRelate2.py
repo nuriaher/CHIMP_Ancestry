@@ -1,6 +1,3 @@
-
- #-bed_base '+bed_base+' -ancestral_pp '+ancestry+' -ind_ID '+ind_ID+' -out_path'
-
 #### 27.11.20
 import subprocess
 import argparse
@@ -33,63 +30,77 @@ if not os.path.isfile(output):
     k = str(4)
     Q_path = admx_base+'.'+k+'.Q'
     fam_path = plink_base+'.fam'
-
-    # Q file step
-    ancestry_index = int()      # Index of the ancestral population column the query individual belongs to
-    pop_indexes = list()        # List where to append positions in Q file of all individuals in ancestral pop
-    with open(Q_path,'r') as Q_file:
-        # Identify ancestral population from first individual
-        query_individual = Q_file.readline()
-        query_indv_data = query_individual.split(' ')
-        for pop in query_indv_data:
-            if str(pop).startswith('0.99'): # If ancestral pop continue, if hybrid pass
-                ancestry_index = int(query_indv_data.index(pop))
-            else:
-                pass
-
-        # Retrieve indexes of same-ancestry RefPanel individuals
-        Q_data = Q_file.readlines()
-        for i in range(len(Q_data)):
-            line = Q_data[i]
-            if not (i == 0):
-                if '0.99' in str(line.split(' ')[ancestry_index]):  # If ancestral pop continue, if hybrid pass
-                    pop_indexes.append(i)
-                else:
-                    pass
-            else:
-                pop_indexes.append(0) # Append query individual index in Q file for ID retrieval
-
-
-    # fam file step
     indv_ancestry_reformatted = ngsrelate_base+'-'+ind_ID # Define ancestry files base
     ID_ancestral_pop = indv_ancestry_reformatted+'_IDs.txt'
 
-    with open(fam_path,'r') as fam_file, open(ID_ancestral_pop,'w+') as ancestry_IDs:
+
+    # Q file step
+    ZOOChimp_index = int()
+    ancestry_index = int()      # Index of the ancestral population column the query individual belongs to
+    pop_indexes = list()        # List where to append positions in Q file of all individuals in ancestral pop
+
+    with open(fam_path,'r') as fam_file, open(Q_path,'r') as Q_file:
+
         fam_data = fam_file.readlines()
-        for index in pop_indexes:
-            fam_line = fam_data[index].split(' ')
-            ancestry_IDs.write(fam_line[0]+' '+fam_line[1]+'\n') # Generate new file with same-ancestry indvs' IDs
+        Q_data = Q_file.readlines()
+
+
+        # Identify ancestral population from first individual + get its index
+        ZOOChimp = [i for i in fam_data if ind_ID in i]
+        ZOOChimp_ID = ZOOChimp[0].split(' ')[0]
+        ZOOChimp_index = fam_data.index(ZOOChimp[0])
+        ZOOChimp_data = Q_data[ZOOChimp_index].split(' ')
+        for pop in ZOOChimp_data:
+            if str(pop).startswith('0.99'): # If ancestral pop continue, if hybrid pass
+                ancestry_index = int(ZOOChimp_data.index(pop))
+                break
+            else:
+                ancestry_index = False
+
+
+        if ancestry_index:
+            # Retrieve indexes of same-ancestry RefPanel individuals
+            for i in range(len(Q_data)):
+                line = Q_data[i]
+                if not (i == ZOOChimp_index):
+                    if '0.99' in str(line.split(' ')[ancestry_index]):  # If ancestral pop continue, if hybrid pass
+                        pop_indexes.append(i)
+                    else:
+                        pass
+                else:
+                    pop_indexes.append(ZOOChimp_index) # Append query individual index in Q file for ID retrieval
+
+            # fam file step
+            with open(ID_ancestral_pop,'w') as chimp_ancestry_IDs:
+                for index in pop_indexes:
+                    fam_line = fam_data[index].split(' ')
+                    if pop_indexes.index(index) == len(pop_indexes):
+                        chimp_ancestry_IDs.write(fam_line[0]+' '+fam_line[1]) # Generate new file with same-ancestry indvs' IDs
+                    else:
+                        chimp_ancestry_IDs.write(fam_line[0]+' '+fam_line[1]+'\n') # Generate new file with same-ancestry indvs' IDs
 
 
 
 
-    ##### 2 - PLINK step, Generate .VCF files : (ZOOChimp + Same ancestry RefPanel)
+            ##### 2 - PLINK step, Generate .VCF files : (ZOOChimp + Same ancestry RefPanel)
 
-    # from Plink .bed files in CA_01-Filtering/Batch/Batch_indv/Individual.bed + keep IDs new file
-    vcfCmd='plink1.9 --bfile '+plink_base+' --keep '+ID_ancestral_pop+' --make-bed --out '+indv_ancestry_reformatted+''
-    subprocess.Popen(vcfCmd,shell=True).wait()
+            # from Plink .bed files in CA_01-Filtering/Batch/Batch_indv/Individual.bed + keep IDs new file
+            bedCmd='plink1.9 --bfile '+plink_base+' --keep '+ID_ancestral_pop+' --make-bed --out '+indv_ancestry_reformatted+''
+            subprocess.Popen(bedCmd,shell=True).wait()
 
 
 
-    ##### 3 -  Run NgsRelate, only on newly generated VCF files
+            ##### 3 -  Run NgsRelate, only on newly generated VCF files
 
-    if os.path.isfile(indv_ancestry_reformatted+'.bed') and (not os.path.isfile(output)):
-        if args.threads:
-            ngsCmd='ngsRelate  -P '+indv_ancestry_reformatted+' -O '+output+' -c 1 -p '+str(args.threads)+''
-            subprocess.Popen(ngsCmd,shell=True).wait()
+            if os.path.isfile(indv_ancestry_reformatted+'.bed') and (not os.path.isfile(output)):
+                if args.threads:
+                    ngsCmd='cut -f1 -d" " ' +ID_ancestral_pop+' > '+IDs_to_ngsrelate+' && ngsRelate  -P '+indv_ancestry_reformatted+' -O '+output+' -c 1 -p '+str(args.threads)+' && rm '+IDs_to_ngsrelate+''
+                    subprocess.Popen(ngsCmd,shell=True).wait()
 
-        else:   # default threads 4
-            ngsCmd='ngsRelate  -P '+indv_ancestry_reformatted+' -c 1 -O '+output+''
-            subprocess.Popen(ngsCmd,shell=True).wait()
+                else:   # default threads 4
 
-# If called genotypes are being used, the software requires an additional argument (-c 1).
+                    IDs_to_ngsrelate = indv_ancestry_reformatted+'_IDs_1c.txt'
+                    ngsCmd='cut -f1 -d" " '+ID_ancestral_pop+' > '+IDs_to_ngsrelate+' && ngsRelate  -P '+indv_ancestry_reformatted+' -c 1 -O '+output+' -z '+IDs_to_ngsrelate+' && rm '+IDs_to_ngsrelate+''
+                    subprocess.Popen(ngsCmd,shell=True).wait()
+
+        # If called genotypes are being used, the software requires an additional argument (-c 1).
