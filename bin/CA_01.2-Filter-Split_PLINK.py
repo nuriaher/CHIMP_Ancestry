@@ -35,7 +35,6 @@ with open(new_IDs,'r') as IDs:
         if not line or line.startswith('#'):
             continue
 
-        if 'Pt' in line:
             if 'Donald' in line:
                 continue
             else:

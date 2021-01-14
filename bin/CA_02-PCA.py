@@ -11,7 +11,7 @@ parser.add_argument('-plink_base', help="filtering step PLINK output", dest="pli
 parser.add_argument('--pca_plot', help="Wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
 parser.add_argument('-batch_ID', help="batch_ID", dest="batch_ID", required=True)
-parser.add_argument('-ind_ID', help="individual ID", dest="ind_ID", required=True)
+parser.add_argument('-ind_ID', help="individual_ID", dest="ind_ID", required=True)
 args = parser.parse_args()
 
 plink_base=args.plink_base
