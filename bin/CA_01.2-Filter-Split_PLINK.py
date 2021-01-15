@@ -64,7 +64,7 @@ with open(new_IDs,'r') as IDs:
         # Check if file exists
         if not (os.path.exists(str(individual_plink_base+'.map'))):
         # Generate individual file + reference panel
-            keepCmd='plink1.9 --file '+in_plink+' --keep '+individual_ID+' --recode --out '+individual_plink_base+''
+            keepCmd='plink1.9 --bfile '+in_plink+' --keep '+individual_ID+' --recode --out '+individual_plink_base+''
             subprocess.Popen(keepCmd,shell=True).wait()
 
 
