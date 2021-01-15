@@ -59,5 +59,5 @@ else:
 
 
 if os.path.isfile(output):
-    os.remove(plink_base+'.bam')
+    os.remove(plink_base+'.bed')
     os.remove(plink_base+'.bim')
