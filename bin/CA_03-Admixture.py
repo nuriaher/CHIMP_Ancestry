@@ -13,6 +13,7 @@ parser.add_argument('--admx_plot', help="Wants to get a .pdf ADMIXTURE Plot", de
 parser.add_argument('-batch_ID', help="batch_ID", dest="batch_ID", required=True)
 parser.add_argument('-ind_ID', help="individual ID", dest="ind_ID", required=True)
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
+parser.add_argument('-C', help="termination criterion for EM algoritm", dest="termination")
 parser.add_argument('-t', help="threads", dest="threads")
 args = parser.parse_args()
 
@@ -36,8 +37,14 @@ plink_base=plink_bed.replace('.bed','')
 Q_file=out_path+'/'+ind_ID+'_plink.pruned.'+str(k)+'.Q'
 
 if not os.path.isfile(Q_file):
-    admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+''
-    subprocess.Popen(admixtureCmd,shell=True).wait()
+
+    if args.termination:
+        admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+' -C '+termination+''
+        subprocess.Popen(admixtureCmd,shell=True).wait()
+
+    else:
+        admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+''
+        subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
 # Plot

@@ -19,6 +19,7 @@ parser = argparse.ArgumentParser(description='Runs Chimp Ancestry.')
 parser.add_argument('-input', help="batchID, vcf file path, Family and Within-family IDs file path", dest="input", required=True)
 parser.add_argument('-out_path', help="output path", dest="out_path", required=True)
     # Optional arguments
+parser.add_argument('--admx_terminate', help="termination criterion for EM algoritm", dest="termination")
 parser.add_argument('--pca_plot', help="wants to get a .pdf PCA Plot", dest="pca_plot", action='store_true')
 parser.add_argument('--admx_plot', help="wants to get a .pdf ADMIXTURE Plot", dest="admx_plot", action='store_true')
 parser.add_argument('--evalAdmix_plot', help="wants to get a .pdf evalADMIX Plot", dest="evalAdmix_plot", action='store_true')
@@ -138,24 +139,36 @@ for i in range(len(batch_ID)):
             os.mkdir(out_path_admx)
 
 
+        admixtureCmd = 'python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+''
+
         if args.t_admixture:
             if args.admx_plot:
-                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' -t '+args.t_admixture+' --admx_plot'
-                subprocess.Popen(admixtureCmd,shell=True).wait()
+                if args.termination:
+                    admixtureCmd += '-C '+args.termination+' -t '+args.t_admixture+' --admx_plot'
+                else:
+                    admixtureCmd += '-t '+args.t_admixture+' --admx_plot'
 
             else:
-                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' -t '+args.t_admixture+''
-                subprocess.Popen(admixtureCmd,shell=True).wait()
+                if args.termination:
+                    admixtureCmd += '-C '+args.termination+' -t '+args.t_admixture+''
+                else:
+                    admixtureCmd += '-t '+args.t_admixture+''
 
 
         if not args.t_admixture:
             if args.admx_plot:
-                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' --admx_plot'
-                subprocess.Popen(admixtureCmd,shell=True).wait()
+                if args.termination:
+                    admixtureCmd += '-C '+args.termination+' --admx_plot'
+                else:
+                    admixtureCmd += '-t --admx_plot'
 
             else:
-                admixtureCmd='python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+''
-                subprocess.Popen(admixtureCmd,shell=True).wait()
+                if args.termination:
+                    admixtureCmd += '-C '+args.termination+''
+                else:
+                    pass
+
+        subprocess.Popen(admixtureCmd,shell=True).wait()
 
 
 
