@@ -139,7 +139,7 @@ for i in range(len(batch_ID)):
             os.mkdir(out_path_admx)
 
 
-        admixtureCmd = 'python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+''
+        admixtureCmd = 'python '+current_dir+'/CHIMP_Ancestry/bin/CA_03-Admixture.py -plink_bed '+plink_base+'.bed -ind_ID '+individual_ID+' -batch_ID '+batch_ID[i]+' -out_path '+out_path_admx+' '
 
         if args.t_admixture:
             if args.admx_plot:

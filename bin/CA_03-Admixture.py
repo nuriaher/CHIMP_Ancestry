@@ -39,7 +39,7 @@ Q_file=out_path+'/'+ind_ID+'_plink.pruned.'+str(k)+'.Q'
 if not os.path.isfile(Q_file):
 
     if args.termination:
-        admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+' -C '+termination+''
+        admixtureCmd='cd '+out_path+' && admixture '+plink_bed+' '+str(k)+' -j'+str(t)+' -C '+args.termination+''
         subprocess.Popen(admixtureCmd,shell=True).wait()
 
     else:
