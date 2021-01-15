@@ -95,4 +95,4 @@ with open(new_IDs,'r') as IDs:
 
 
 if os.path.exists(individual_plink_base+'_plink.pruned.bed'):
-    rmCmd='rm '+individual_ID+'  '+individual_plink_base+'*.ped '+individual_plink_base+'*.map'
+    rmCmd='rm '+individual_plink_base+'*.ped '+individual_plink_base+'*.map'

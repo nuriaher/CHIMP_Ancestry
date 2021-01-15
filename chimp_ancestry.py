@@ -100,7 +100,6 @@ for i in range(len(batch_ID)):
     for file in files_individuals:
         individual_ID=os.path.basename(file)
         individual_ID=individual_ID.replace('_plink.pruned.bed','') # indv ID
-
         plink_base=file.replace('.bed','') # full path
 
 
