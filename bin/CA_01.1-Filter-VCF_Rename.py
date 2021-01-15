@@ -22,6 +22,7 @@ batch_ID=args.batch_ID
 
 
 ## Run
+update = ''
 
 if not (os.path.exists(out_path+'/'+batch_ID+'-filtered_VCF.recode.vcf')):
 # remove indels, only biallelic, minimum quality 30, minimum depth 4
@@ -69,13 +70,26 @@ if not (os.path.exists(new_IDs)):
 
                 reformatted_IDs.write(line.strip()+'\t'+new_line+'\n')
 
-            if len(line.split(' ')) == 4: # Names have already been reformated
-                mvCmd='cp '+in_IDs+' '+new_IDs+''
-                subprocess.Popen(mvCmd,shell=True).wait()
+
+            if len(line.split(' ')) == 4: # Names do not have to be reformatted or are customised IDs
+                if not (line.split(' ')[0] == line.split(' ')[2]): # The current and new IDs are actually different: custom
+                    mvCmd='cp '+in_IDs+' '+new_IDs+''
+                    subprocess.Popen(mvCmd,shell=True).wait()
+
+                    update = 'update'
+                    
+                else:   # the current and new IDs are the same: not want to rename
+                    pass
 
 
 
 if not (os.path.exists(out_path+'/'+batch_ID+'-in_Plink_reformat.map')):
 # update names (shorten names with subspecies abbreviated prefix)
-    plink1Cmd='plink1.9 --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.txt --make-bed --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
-    subprocess.Popen(plink1Cmd,shell=True).wait()
+
+    if update:
+        plink1Cmd='plink1.9 --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.txt --make-bed --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
+        subprocess.Popen(plink1Cmd,shell=True).wait()
+
+    else:
+        plink1Cmd='plink1.9 --file '+out_path+'/'+batch_ID+'-in_Plink --make-bed --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
+        subprocess.Popen(plink1Cmd,shell=True).wait()
