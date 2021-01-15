@@ -61,3 +61,4 @@ else:
 if os.path.isfile(output):
     os.remove(plink_base+'.bed')
     os.remove(plink_base+'.bim')
+    os.remove(plink_base+'.nosex')

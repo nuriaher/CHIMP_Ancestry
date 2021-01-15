@@ -92,3 +92,7 @@ with open(new_IDs,'r') as IDs:
 
             plink5Cmd='plink1.9 --file '+individual_plink_base+'_maf05_geno0 --extract plink.prune.in --make-bed --out '+individual_plink_base+'_plink.pruned'
             subprocess.Popen(plink5Cmd,shell=True).wait()
+
+
+if os.path.exists(individual_plink_base+'_plink.pruned.bed'):
+    os.remove(individual_ID)
