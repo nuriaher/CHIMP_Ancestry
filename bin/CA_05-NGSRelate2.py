@@ -145,5 +145,12 @@ for pop in range(0,4):
                 ngsCmd='cut -f1 -d" " '+ancestry_keep_file+' > '+IDs_to_ngsrelate+' && ngsRelate  -P '+out_plink_base+' -c 1 -O '+output+' -z '+IDs_to_ngsrelate+' && rm '+IDs_to_ngsrelate+''
                 subprocess.Popen(ngsCmd,shell=True).wait()
 
+        if os.path.isfile(output):
+            os.remove(fam_path)
+            plinks = glob.glob(out_plink_base+'*')
+            for plink in plinks:
+                os.remove(plink)
+
+
     else:
         pass
