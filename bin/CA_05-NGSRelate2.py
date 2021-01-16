@@ -128,7 +128,7 @@ for pop in range(0,4):
 
 
         # from Plink .bed files in CA_01-Filtering/Batch/Batch_indv/Individual.bed + keep IDs new file
-        bedCmd='plink1.9 --file '+plink_base_ancestry+' --keep '+ancestry_keep_file+' --make-bed --out '+out_plink_base+''
+        bedCmd='plink1.9 --bfile '+plink_base_ancestry+' --keep '+ancestry_keep_file+' --make-bed --out '+out_plink_base+''
         subprocess.Popen(bedCmd,shell=True).wait()
 
 
@@ -138,7 +138,7 @@ for pop in range(0,4):
         if os.path.isfile(out_plink_base+'.bed') and (not os.path.isfile(output)):
 
             if args.threads:
-                ngsCmd='cut -f1 -d" " ' +ancestry_keep_file+' > '+IDs_to_ngsrelate+' && ngsRelate  -P '+out_plink_base+' -O '+output+' -c 1 -p '+str(args.threads)+' && rm '+IDs_to_ngsrelate+''
+                ngsCmd='cut -f1 -d" " ' +ancestry_keep_file+' > '+IDs_to_ngsrelate+' && ngsRelate  -P '+out_plink_base+' -c 1 -O '+output+' -z '+IDs_to_ngsrelate+' -p '+str(args.threads)+' && rm '+IDs_to_ngsrelate+''
                 subprocess.Popen(ngsCmd,shell=True).wait()
 
             else:   # default threads 4

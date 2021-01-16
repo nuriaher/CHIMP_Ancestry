@@ -77,7 +77,7 @@ if not (os.path.exists(new_IDs)):
                     subprocess.Popen(mvCmd,shell=True).wait()
 
                     update = 'update'
-                    
+
                 else:   # the current and new IDs are the same: not want to rename
                     pass
 
@@ -87,7 +87,7 @@ if not (os.path.exists(out_path+'/'+batch_ID+'-in_Plink_reformat.map')):
 # update names (shorten names with subspecies abbreviated prefix)
 
     if update:
-        plink1Cmd='plink1.9 --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.txt --make-bed --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
+        plink1Cmd='plink1.9 --file '+out_path+'/'+batch_ID+'-in_Plink --update-ids '+out_path+'/'+batch_ID+'-new_IDs.txt --recode --out '+out_path+'/'+batch_ID+'-in_Plink_reformat'
         subprocess.Popen(plink1Cmd,shell=True).wait()
 
     else:
