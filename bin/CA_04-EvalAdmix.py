@@ -48,7 +48,7 @@ else:
 
         # Get current directory
         file = os.path.dirname(sys.argv[0])
-        curr_dir = os.path.abspath(file)
+        curr_dir = os.path.abspath(file) # get current directory
 
 
         evaladmxplotCmd='Rscript '+curr_dir+'/CA_04.1-EvalAdmix_Plot.R -Q_admx '+Q_file+' -fam_file '+fam_file+' -matrix_out '+output+' -ind_ID '+ind_ID+' -batch_ID '+batch_ID+' -script_path '+curr_dir+' -out_path '+out_path+''
