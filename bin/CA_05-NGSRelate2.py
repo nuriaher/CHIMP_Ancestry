@@ -114,7 +114,7 @@ for pop in range(0,4):
         plink_base_ancestry = plink_base.replace('_indv','-in_Plink_reformat')
 
         ancestry_keep_file = ngsrelate_base+'-'+str(pop)+'_keep_ancestry.txt'
-        out_plink_base = ngsrelate_base+'-'+str(pop)
+        out_plink_base = ngsrelate_base+'-'+str(pop)+'.plink'
         output = ngsrelate_base+'-'+str(pop)+'.res'
         IDs_to_ngsrelate = ngsrelate_base+'-'+str(pop)+'_keep_1c.txt'
 

@@ -37,6 +37,6 @@ par(mar=c(7.5,4,2.5,6.5),cex.lab=0.75,cex.axis=0.6)
 barplot(t(as.matrix(tbl)),
         col=brewer.pal(6,"Set1"), ylab = 'Ancestry Proportions',
         border = NA, space = 0, names.arg = fam$V1,
-        las=2, cex.names = 0.4, main=paste0(fam$V1[1],' vs Reference Panel'), cex.main=1 )
+        las=2, cex.names = 0.4, main=paste0('ZOOChimp vs Reference Panel'), cex.main=1 )
 legend("right", Subspecies_in_sample, fill = brewer.pal(6,"Set1"), bty = "n", xpd=TRUE, inset = -0.25, cex=.8)
 dev.off()
