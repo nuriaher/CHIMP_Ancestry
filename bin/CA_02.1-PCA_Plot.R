@@ -1,5 +1,6 @@
 library("argparse")
 library("ggplot2")
+library("dplyr")
 library("tidyverse")
 
 # Parse inputs
@@ -51,13 +52,14 @@ Subspecies_in_sample=as.factor(evec_pc$subspp)
 pca <- ggplot(evec_pc, aes(PC1, PC2, col = Subspecies_in_sample)) + geom_point(alpha = 0.5, size = 4)
 ggtitle(title)
 
+pc_1 = paste0("PC1 (", round(p_eval[,2][1],2), "%)")
+pc_2 = paste0("PC1 (", round(p_eval[,2][2],2), "%)")
 
 if (length(levels(as.factor(evec_pc$subspp))) == 5){
   pca <- pca + scale_colour_manual(values = c("blue", "orange", "yellow", "purple","green"))}
 if (length(levels(as.factor(evec_pc$subspp))) == 6){
   pca <- pca + scale_colour_manual(values = c("blue", "orange", "yellow", "purple" , "red", "green"))}
 
-pca <- pca + coord_equal() + theme_light()
-pca + xlab(paste0("PC1 (", signif(p_eval$p_eval[1], 3), "%)")) + ylab(paste0("PC2 (", signif(p_eval$p_eval[2], 3), "%)"))
+pca <- pca + coord_equal() + theme_light() + xlab(pc_1) + ylab(pc_2)
 
 ggsave(pca, device = NULL, path = out_path, filename = paste0("PCA_",batch,"-",individual,".pdf"))

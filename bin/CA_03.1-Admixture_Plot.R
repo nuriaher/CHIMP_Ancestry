@@ -1,5 +1,7 @@
 library("RColorBrewer")
 library("argparse")
+library("ggplot2")
+library("tidyverse")
 
 
 # Parse inputs
@@ -22,21 +24,23 @@ out_path <- args$out_path
 tbl <-read.table(Q_admx)
 fam <-read.table(fam_path)
 
-# Generate Subspecies column - plot's sake
-fam$subspp <- ''
-fam$subspp[grep("Pt_troglodytes", fam$V1)] <- "Pt_troglodytes"
-fam$subspp[grep("Pt_ellioti", fam$V1)] <- "Pt_ellioti"
-fam$subspp[grep("Pt_verus", fam$V1)] <- "Pt_verus"
-fam$subspp[grep("Pt_schweinfurthii", fam$V1)] <- "Pt_schweinfurthii"
-Subspecies_in_sample=levels(as.factor(fam$subspp))
-Subspecies_in_sample=Subspecies_in_sample[Subspecies_in_sample != ""]
+
+# Rearrange data 
+plot_data <- tbl %>%
+  mutate(id = fam$V1) %>%
+  gather('pop', 'prob', V1:V4) %>%
+  group_by(id) %>%
+  mutate(likely_assignment = pop[which.max(prob)],
+         assingment_prob = max(prob)) %>%
+  arrange(likely_assignment, desc(assingment_prob)) %>%
+  ungroup() %>%
+  mutate(id = forcats::fct_inorder(factor(id)))
 
 
-pdf(file = paste0(out_path,"/ADMIXTURE-",batch,"-",individual,".pdf"))
-par(mar=c(7.5,4,2.5,6.5),cex.lab=0.75,cex.axis=0.6)
-barplot(t(as.matrix(tbl)),
-        col=brewer.pal(6,"Set1"), ylab = 'Ancestry Proportions',
-        border = NA, space = 0, names.arg = fam$V1,
-        las=2, cex.names = 0.4, main=paste0('ZOOChimp vs Reference Panel'), cex.main=1 )
-legend("right", Subspecies_in_sample, fill = brewer.pal(6,"Set1"), bty = "n", xpd=TRUE, inset = -0.25, cex=.8)
-dev.off()
+# Plot
+admx <- ggplot(plot_data, aes(id, prob, fill = pop)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, size = 7))+
+  facet_grid(~likely_assignment, scales = 'free', space = 'free')
+
+ggsave(plot = admx, filename = paste0("ADMIXTURE-",batch,"-",individual,".pdf"), path = out_path)
