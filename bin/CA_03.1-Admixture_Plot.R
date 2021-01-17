@@ -39,8 +39,11 @@ plot_data <- tbl %>%
 
 # Plot
 admx <- ggplot(plot_data, aes(id, prob, fill = pop)) +
-  geom_col() +
-  theme(axis.text.x = element_text(angle = 90, size = 7))+
-  facet_grid(~likely_assignment, scales = 'free', space = 'free')
+  geom_col() + facet_grid(~likely_assignment, scales = 'free', space = 'free') +
+  theme(axis.text.x = element_text(angle = 90, size=7))
+
+title <- paste0(individual," vs Reference panel")
+admx <- admx + ggtitle(title)
+
 
 ggsave(plot = admx, filename = paste0("ADMIXTURE-",batch,"-",individual,".pdf"), path = out_path)
