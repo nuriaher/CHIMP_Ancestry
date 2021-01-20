@@ -53,7 +53,7 @@ pca <- ggplot(evec_pc, aes(PC1, PC2, col = Subspecies_in_sample)) + geom_point(a
 ggtitle(title)
 
 pc_1 = paste0("PC1 (", round(p_eval[,2][1],2), "%)")
-pc_2 = paste0("PC1 (", round(p_eval[,2][2],2), "%)")
+pc_2 = paste0("PC2 (", round(p_eval[,2][2],2), "%)")
 
 if (length(levels(as.factor(evec_pc$subspp))) == 5){
   pca <- pca + scale_colour_manual(values = c("blue", "orange", "yellow", "purple","green"))}
